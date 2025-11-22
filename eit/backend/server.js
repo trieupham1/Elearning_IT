@@ -43,13 +43,7 @@ const forumRoutes = require('./routes/forum');
 const dashboardRoutes = require('./routes/dashboard');
 const exportRoutes = require('./routes/export');
 const settingsRoutes = require('./routes/settings');
-const departmentRoutes = require('./routes/departments');
-const adminRoutes = require('./routes/admin');
-const adminDashboardRoutes = require('./routes/adminDashboard');
-const adminReportsRoutes = require('./routes/adminReports');
 const { router: fileRoutes, initializeGridFS } = require('./routes/files');
-const attendanceRoutes = require('./routes/attendance');
-const codeAssignmentRoutes = require('./routes/code-assignments');
 
 
 app.use('/api/auth', authRoutes);
@@ -71,13 +65,7 @@ app.use('/api/forum', forumRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/settings', settingsRoutes);
-app.use('/api/departments', departmentRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/admin/dashboard', adminDashboardRoutes);
-app.use('/api/admin/reports', adminReportsRoutes);
 app.use('/api/files', fileRoutes);
-app.use('/api/attendance', attendanceRoutes);
-app.use('/api/code', codeAssignmentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -119,14 +107,6 @@ mongoose.connect(process.env.MONGODB_URI)
     const gfsBucket = new GridFSBucket(db, { bucketName: 'uploads' });
     initializeGridFS(gfsBucket);
     console.log('GridFS initialized');
-    
-    // Validate Judge0 configuration for code assignments
-    const { validateConfig } = require('./utils/judge0Helper');
-    if (validateConfig()) {
-      console.log('✓ Judge0 API configured');
-    } else {
-      console.log('✗ Judge0 API not configured - code assignments will not work');
-    }
     
     // Start scheduled tasks
     startScheduledTasks();
