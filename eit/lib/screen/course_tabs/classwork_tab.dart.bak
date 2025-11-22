@@ -1,0 +1,613 @@
+// screens/course_tabs/classwork_tab.dart
+import 'package:flutter/material.dart';
+import '../../models/course.dart';
+import '../../models/user.dart';
+import '../../services/classwork_service.dart';
+
+enum ClassworkType { all, assignments, quizzes, materials }
+
+class ClassworkTab extends StatefulWidget {
+  final Course course;
+  final User? currentUser;
+
+  const ClassworkTab({super.key, required this.course, this.currentUser});
+
+  @override
+  State<ClassworkTab> createState() => _ClassworkTabState();
+}
+
+class _ClassworkTabState extends State<ClassworkTab> {
+  final ClassworkService _classworkService = ClassworkService();
+  ClassworkType _filter = ClassworkType.all;
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+  List<ClassworkItem> _items = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadClasswork();
+  }
+
+  Future<void> _loadClasswork() async {
+    setState(() => _isLoading = true);
+    try {
+      String? filterType;
+      switch (_filter) {
+        case ClassworkType.assignments:
+          filterType = 'assignments';
+          break;
+        case ClassworkType.quizzes:
+          filterType = 'quizzes';
+          break;
+        case ClassworkType.materials:
+          filterType = 'materials';
+          break;
+        default:
+          filterType = null;
+      }
+
+      final items = await _classworkService.getClasswork(
+        courseId: widget.course.id,
+        search: _searchQuery.isNotEmpty ? _searchQuery : null,
+        filter: filterType,
+      );
+
+      setState(() {
+        _items = items;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error loading classwork: $e');
+      setState(() => _isLoading = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<ClassworkItem> get _filteredItems {
+    // Filtering is now done on the backend
+    return _items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      body: Column(
+        children: [
+          // Search and Filter Bar
+          Container(
+            color: Colors.grey.shade100,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                // Search Field
+                TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search classwork...',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
+                            },
+                          )
+                        : null,
+                    border: const OutlineInputBorder(),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                    _loadClasswork(); // Reload with search query
+                  },
+                ),
+                const SizedBox(height: 12),
+
+                // Filter Chips
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildFilterChip('All', ClassworkType.all),
+                      const SizedBox(width: 8),
+                      _buildFilterChip(
+                        'Announcements',
+                        ClassworkType.announcements,
+                      ),
+                      const SizedBox(width: 8),
+                      _buildFilterChip(
+                        'Assignments',
+                        ClassworkType.assignments,
+                      ),
+                      const SizedBox(width: 8),
+                      _buildFilterChip('Quizzes', ClassworkType.quizzes),
+                      const SizedBox(width: 8),
+                      _buildFilterChip('Materials', ClassworkType.materials),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Classwork List
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : totalCount == 0
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.assignment_outlined,
+                          size: 64,
+                          color: Colors.grey.shade400,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _searchQuery.isNotEmpty
+                              ? 'No results found'
+                              : 'No classwork yet',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      // Announcements
+                      if (showAnnouncements) ...[
+                        ..._filteredAnnouncements.map(
+                          (announcement) => _AnnouncementCard(
+                            announcement: announcement,
+                            currentUser: widget.currentUser,
+                            onTap: () =>
+                                _navigateToAnnouncementDetail(announcement),
+                            onEdit: _isInstructor
+                                ? () => _editAnnouncement(announcement)
+                                : null,
+                            onViewTracking: _isInstructor
+                                ? () => _viewAnnouncementTracking(announcement)
+                                : null,
+                          ),
+                        ),
+                      ],
+
+                      // Other Classwork
+                      if (showClasswork) ...[
+                        ..._filteredItems.map(
+                          (item) => _ClassworkCard(item: item),
+                        ),
+                      ],
+                    ],
+                  ),
+          ),
+        ],
+      ),
+
+      // FAB for instructors
+      floatingActionButton: _isInstructor
+          ? FloatingActionButton.extended(
+              onPressed: _createAnnouncement,
+              icon: const Icon(Icons.add),
+              label: const Text('Announcement'),
+            )
+          : null,
+    );
+  }
+
+  void _navigateToAnnouncementDetail(Announcement announcement) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AnnouncementDetailScreen(
+          announcementId: announcement.id,
+          currentUser: widget.currentUser,
+        ),
+      ),
+    ).then((_) => _loadClasswork()); // Reload after returning
+  }
+
+  void _createAnnouncement() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreateAnnouncementScreen(course: widget.course),
+      ),
+    ).then((_) => _loadClasswork()); // Reload after creating
+  }
+
+  void _editAnnouncement(Announcement announcement) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreateAnnouncementScreen(
+          course: widget.course,
+          announcement: announcement,
+        ),
+      ),
+    ).then((_) => _loadClasswork()); // Reload after editing
+  }
+
+  void _viewAnnouncementTracking(Announcement announcement) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AnnouncementTrackingScreen(announcement: announcement),
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, ClassworkType type) {
+    final isSelected = _filter == type;
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) {
+        setState(() {
+          _filter = type;
+        });
+        _loadClasswork(); // Reload with filter
+      },
+      selectedColor: Theme.of(context).primaryColor.withOpacity(0.2),
+      checkmarkColor: Theme.of(context).primaryColor,
+    );
+  }
+}
+
+// ClassworkItem moved to classwork_service.dart
+
+class _ClassworkCard extends StatelessWidget {
+  final ClassworkItem item;
+
+  const _ClassworkCard({required this.item});
+
+  IconData get _icon {
+    switch (item.type) {
+      case 'assignment':
+        return Icons.assignment;
+      case 'quiz':
+        return Icons.quiz;
+      case 'material':
+        return Icons.folder;
+      default:
+        return Icons.article;
+    }
+  }
+
+  Color get _color {
+    switch (item.type) {
+      case 'assignment':
+        return Colors.orange;
+      case 'quiz':
+        return Colors.red;
+      case 'material':
+        return Colors.blue;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String get _typeLabel {
+    switch (item.type) {
+      case 'assignment':
+        return 'Assignment';
+      case 'quiz':
+        return 'Quiz';
+      case 'material':
+        return 'Material';
+      default:
+        return 'Item';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: InkWell(
+        onTap: () {
+          // Navigate to detail screen
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              // Icon
+              CircleAvatar(
+                backgroundColor: _color.withOpacity(0.1),
+                child: Icon(_icon, color: _color),
+              ),
+              const SizedBox(width: 16),
+
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Type label
+                    Text(
+                      _typeLabel,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: _color,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+
+                    // Title
+                    Text(
+                      item.title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    if (item.description != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        item.description!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+
+                    const SizedBox(height: 8),
+
+                    // Metadata
+                    Wrap(
+                      spacing: 16,
+                      children: [
+                        if (item.dueDate != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.schedule,
+                                size: 16,
+                                color: Colors.grey.shade600,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Due ${_formatDate(item.dueDate!)}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final diff = date.difference(now);
+
+    if (diff.inDays == 0) {
+      return 'today';
+    } else if (diff.inDays == 1) {
+      return 'tomorrow';
+    } else if (diff.inDays < 0) {
+      return '${diff.inDays.abs()} days ago';
+    } else {
+      return 'in ${diff.inDays} days';
+    }
+  }
+}
+
+// Announcement Card Widget
+class _AnnouncementCard extends StatelessWidget {
+  final Announcement announcement;
+  final User? currentUser;
+  final VoidCallback onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onViewTracking;
+
+  const _AnnouncementCard({
+    required this.announcement,
+    required this.currentUser,
+    required this.onTap,
+    this.onEdit,
+    this.onViewTracking,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormat = DateFormat('MMM d, yyyy • h:mm a');
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Row
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.green.withOpacity(0.1),
+                    child: const Icon(Icons.campaign, color: Colors.green),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Announcement',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          announcement.authorName,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Action Menu for instructors
+                  if (onEdit != null || onViewTracking != null)
+                    PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'edit') {
+                          onEdit?.call();
+                        } else if (value == 'tracking') {
+                          onViewTracking?.call();
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        if (onEdit != null)
+                          const PopupMenuItem(
+                            value: 'edit',
+                            child: Row(
+                              children: [
+                                Icon(Icons.edit, size: 20),
+                                SizedBox(width: 12),
+                                Text('Edit'),
+                              ],
+                            ),
+                          ),
+                        if (onViewTracking != null)
+                          const PopupMenuItem(
+                            value: 'tracking',
+                            child: Row(
+                              children: [
+                                Icon(Icons.analytics, size: 20),
+                                SizedBox(width: 12),
+                                Text('View Tracking'),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Title
+              Text(
+                announcement.title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // Content Preview
+              Text(
+                announcement.content,
+                style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 12),
+
+              // Metadata Row
+              Row(
+                children: [
+                  Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
+                  const SizedBox(width: 4),
+                  Text(
+                    dateFormat.format(announcement.createdAt),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  ),
+
+                  if (announcement.attachments.isNotEmpty) ...[
+                    const SizedBox(width: 16),
+                    Icon(
+                      Icons.attach_file,
+                      size: 16,
+                      color: Colors.grey.shade600,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${announcement.attachments.length} ${announcement.attachments.length == 1 ? 'file' : 'files'}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+
+                  if (announcement.comments.isNotEmpty) ...[
+                    const SizedBox(width: 16),
+                    Icon(Icons.comment, size: 16, color: Colors.grey.shade600),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${announcement.comments.length}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+
+                  if (announcement.groups != null &&
+                      announcement.groups!.isNotEmpty) ...[
+                    const SizedBox(width: 16),
+                    Icon(Icons.group, size: 16, color: Colors.grey.shade600),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${announcement.groups!.length} ${announcement.groups!.length == 1 ? 'group' : 'groups'}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
