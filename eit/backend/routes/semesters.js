@@ -118,34 +118,6 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-// Activate semester (admin only) - Sets this semester as active and deactivates all others
-router.put('/:id/activate', auth, async (req, res) => {
-  try {
-    if (req.userRole !== 'admin') {
-      return res.status(403).json({ message: 'Only admins can activate semesters' });
-    }
-
-    // Deactivate all other semesters
-    await Semester.updateMany({}, { isActive: false });
-
-    // Activate the specified semester
-    const semester = await Semester.findByIdAndUpdate(
-      req.params.id,
-      { isActive: true },
-      { new: true }
-    );
-
-    if (!semester) {
-      return res.status(404).json({ message: 'Semester not found' });
-    }
-
-    res.json(semester);
-  } catch (error) {
-    console.error('Activate semester error:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
 // Delete semester (admin only)
 router.delete('/:id', auth, async (req, res) => {
   try {

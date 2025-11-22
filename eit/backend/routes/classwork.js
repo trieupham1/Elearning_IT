@@ -4,68 +4,25 @@ const Quiz = require('../models/Quiz');
 const Material = require('../models/Material');
 const QuizAttempt = require('../models/QuizAttempt');
 const Course = require('../models/Course');
-const Video = require('../models/Video');
-const AttendanceSession = require('../models/AttendanceSession');
-const CodeSubmission = require('../models/CodeSubmission');
 const { authMiddleware, instructorOnly } = require('../middleware/auth');
 const { notifyNewAssignment, notifyNewQuiz, notifyNewMaterial } = require('../utils/notificationHelper');
 
 const router = express.Router();
-  
+
 // Get all classwork for a course (unified endpoint)
 router.get('/course/:courseId', authMiddleware, async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { search, filter } = req.query; // filter: 'assignments', 'quizzes', 'materials', 'videos', 'attendance', 'code_assignments'
+    const { search, filter } = req.query; // filter can be: 'assignments', 'quizzes', 'materials'
     
     let classwork = [];
     
     // Fetch based on filter
     if (!filter || filter === 'assignments') {
-      const assignments = await Assignment.find({ 
-        courseId,
-        type: { $ne: 'code' } // Exclude code assignments (they're handled separately)
-      })
+      const assignments = await Assignment.find({ courseId })
         .sort({ deadline: -1 })
         .lean();
       classwork = [...classwork, ...assignments.map(a => ({ ...a, type: 'assignment' }))];
-    }
-    
-    // NEW: Code Assignments (from Assignment model with type='code')
-    if (!filter || filter === 'code_assignments') {
-      const codeAssignments = await Assignment.find({ 
-        courseId,
-        type: 'code' // Only get code type assignments
-      })
-        .sort({ deadline: -1 })
-        .lean();
-        
-      // For students, check submission status
-      let codeAssignmentsWithStatus = codeAssignments.map(c => ({ 
-        ...c, 
-        type: 'code_assignment',
-        dueDate: c.deadline // Add dueDate alias for frontend compatibility
-      }));
-      
-      if (req.user.role === 'student') {
-        const assignmentIds = codeAssignments.map(c => c._id);
-        const submissions = await CodeSubmission.find({
-          assignmentId: { $in: assignmentIds },
-          studentId: req.user.userId,
-          status: 'completed'
-        }).select('assignmentId').lean();
-        
-        const submittedIds = new Set(submissions.map(s => s.assignmentId.toString()));
-        
-        codeAssignmentsWithStatus = codeAssignments.map(c => ({
-          ...c,
-          type: 'code_assignment',
-          dueDate: c.deadline, // Add dueDate alias
-          isSubmitted: submittedIds.has(c._id.toString())
-        }));
-      }
-      
-      classwork = [...classwork, ...codeAssignmentsWithStatus];
     }
     
     if (!filter || filter === 'quizzes') {
@@ -104,22 +61,6 @@ router.get('/course/:courseId', authMiddleware, async (req, res) => {
       classwork = [...classwork, ...materials.map(m => ({ ...m, type: 'material' }))];
     }
     
-    // NEW: Videos
-    if (!filter || filter === 'videos') {
-      const videos = await Video.find({ courseId })
-        .sort({ uploadedAt: -1 })
-        .lean();
-      classwork = [...classwork, ...videos.map(v => ({ ...v, type: 'video' }))];
-    }
-    
-    // NEW: Attendance Sessions
-    if (!filter || filter === 'attendance') {
-      const sessions = await AttendanceSession.find({ courseId })
-        .sort({ sessionDate: -1 })
-        .lean();
-      classwork = [...classwork, ...sessions.map(s => ({ ...s, type: 'attendance' }))];
-    }
-    
     // Apply search filter
     if (search) {
       const searchLower = search.toLowerCase();
@@ -131,8 +72,8 @@ router.get('/course/:courseId', authMiddleware, async (req, res) => {
     
     // Sort by date (most recent first)
     classwork.sort((a, b) => {
-      const dateA = a.deadline || a.closeDate || a.sessionDate || a.dueDate || a.uploadedAt || a.createdAt;
-      const dateB = b.deadline || b.closeDate || b.sessionDate || b.dueDate || b.uploadedAt || b.createdAt;
+      const dateA = a.deadline || a.closeDate || a.createdAt;
+      const dateB = b.deadline || b.closeDate || b.createdAt;
       return new Date(dateB) - new Date(dateA);
     });
     

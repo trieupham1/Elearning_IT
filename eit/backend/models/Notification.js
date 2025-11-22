@@ -20,10 +20,8 @@ const notificationSchema = new mongoose.Schema({
       'quiz',            // New quiz available
       'submission',      // Student submitted assignment (instructor only)
       'quiz_attempt',    // Student completed quiz (instructor only)
-      'course_invite',   // Course invitation for students
-      'course_join_request', // Student request to join course
-      'teacher_invite',  // Teacher/instructor invitation to teach course
-      'teacher_invite_response' // Teacher accepted/declined invitation
+      'course_invite',   // Course invitation
+      'course_join_request' // Student request to join course
     ]
   },
   title: {

@@ -13,19 +13,7 @@ const messageSchema = new mongoose.Schema({
     mimeType: String
   }],
   isRead: { type: Boolean, default: false },
-  readAt: Date,
-  // Call history fields
-  messageType: { 
-    type: String, 
-    enum: ['text', 'audio_call', 'video_call'], 
-    default: 'text' 
-  },
-  callDuration: { type: Number }, // Duration in seconds
-  callStatus: { 
-    type: String, 
-    enum: ['completed', 'missed', 'rejected', 'no_answer'], 
-    default: 'completed' 
-  }
+  readAt: Date
 }, { timestamps: true });
 
 messageSchema.index({ senderId: 1, receiverId: 1, createdAt: -1 });

@@ -65,37 +65,6 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Search users by name or email (authenticated users)
-router.get('/search', auth, async (req, res) => {
-  try {
-    const { q } = req.query;
-    
-    if (!q || q.trim().length === 0) {
-      return res.json([]);
-    }
-    
-    const searchQuery = q.trim();
-    
-    // Search by username, firstName, lastName, or email
-    const users = await User.find({
-      $or: [
-        { username: { $regex: searchQuery, $options: 'i' } },
-        { firstName: { $regex: searchQuery, $options: 'i' } },
-        { lastName: { $regex: searchQuery, $options: 'i' } },
-        { email: { $regex: searchQuery, $options: 'i' } }
-      ],
-      _id: { $ne: req.userId } // Exclude current user from results
-    })
-    .select('_id username email firstName lastName fullName role profilePicture')
-    .limit(20); // Limit to 20 results
-    
-    res.json(users);
-  } catch (error) {
-    console.error('Search users error:', error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
 // Get user by ID
 router.get('/:id', auth, async (req, res) => {
   try {

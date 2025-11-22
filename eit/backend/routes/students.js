@@ -1,12 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
-const { authMiddleware, instructorOnly, adminOrInstructor } = require('../middleware/auth');
+const { authMiddleware, instructorOnly } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Get all students - Allow both admin and instructor
-router.get('/', authMiddleware, adminOrInstructor, async (req, res) => {
+// Get all students
+router.get('/', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const students = await User.find({ role: 'student' })
       .select('-password')
@@ -17,8 +17,8 @@ router.get('/', authMiddleware, adminOrInstructor, async (req, res) => {
   }
 });
 
-// Get single student - Allow both admin and instructor
-router.get('/:id', authMiddleware, adminOrInstructor, async (req, res) => {
+// Get single student
+router.get('/:id', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const student = await User.findById(req.params.id)
       .select('-password');
@@ -33,8 +33,8 @@ router.get('/:id', authMiddleware, adminOrInstructor, async (req, res) => {
   }
 });
 
-// Create student - Allow both admin and instructor
-router.post('/', authMiddleware, adminOrInstructor, async (req, res) => {
+// Create student
+router.post('/', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const { username, password, firstName, lastName, email, studentId, phoneNumber, department, year } = req.body;
     
@@ -91,8 +91,8 @@ router.post('/', authMiddleware, adminOrInstructor, async (req, res) => {
   }
 });
 
-// Update student - Allow both admin and instructor
-router.put('/:id', authMiddleware, adminOrInstructor, async (req, res) => {
+// Update student
+router.put('/:id', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const { email, phoneNumber, password, year, bio } = req.body;
     
@@ -132,8 +132,8 @@ router.put('/:id', authMiddleware, adminOrInstructor, async (req, res) => {
   }
 });
 
-// CSV Import Preview - validates data and checks for duplicates - Allow both admin and instructor
-router.post('/import/preview', authMiddleware, adminOrInstructor, async (req, res) => {
+// CSV Import Preview - validates data and checks for duplicates
+router.post('/import/preview', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const { students } = req.body;
     
@@ -204,8 +204,8 @@ router.post('/import/preview', authMiddleware, adminOrInstructor, async (req, re
   }
 });
 
-// CSV Import Confirm - actually imports the validated data - Allow both admin and instructor
-router.post('/import/confirm', authMiddleware, adminOrInstructor, async (req, res) => {
+// CSV Import Confirm - actually imports the validated data
+router.post('/import/confirm', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const { items } = req.body; // Items from preview with status
     
@@ -277,8 +277,8 @@ router.post('/import/confirm', authMiddleware, adminOrInstructor, async (req, re
   }
 });
 
-// Delete student - Allow both admin and instructor
-router.delete('/:id', authMiddleware, adminOrInstructor, async (req, res) => {
+// Delete student
+router.delete('/:id', authMiddleware, instructorOnly, async (req, res) => {
   try {
     const student = await User.findById(req.params.id);
     

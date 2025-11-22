@@ -7,14 +7,6 @@ const assignmentSchema = new mongoose.Schema({
   createdByName: { type: String, required: true }, // Store creator name to avoid validation issues
   title: { type: String, required: true },
   description: String,
-  
-  // Assignment type: 'file' for traditional file uploads, 'code' for coding assignments
-  type: {
-    type: String,
-    enum: ['file', 'code'],
-    default: 'file'
-  },
-  
   groupIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }], // Empty array = all groups
   startDate: { type: Date, required: true },
   deadline: { type: Date, required: true },
@@ -30,34 +22,6 @@ const assignmentSchema = new mongoose.Schema({
     mimeType: String
   }],
   points: { type: Number, default: 100 },
-  
-  // Code assignment specific fields
-  codeConfig: {
-    language: {
-      type: String,
-      enum: ['python', 'java', 'cpp', 'javascript', 'c']
-    },
-    languageId: Number, // Judge0 language ID
-    starterCode: String,
-    solutionCode: String, // Hidden from students
-    allowedLanguages: [{
-      type: String,
-      enum: ['python', 'java', 'cpp', 'javascript', 'c']
-    }],
-    timeLimit: {
-      type: Number,
-      default: 5000 // milliseconds
-    },
-    memoryLimit: {
-      type: Number,
-      default: 128000 // KB
-    },
-    showTestCases: {
-      type: Boolean,
-      default: true // Show visible test cases to students
-    }
-  },
-  
   // Track who has viewed this assignment
   viewedBy: [{
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

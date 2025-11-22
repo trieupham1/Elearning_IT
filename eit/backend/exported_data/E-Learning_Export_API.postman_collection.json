@@ -1,0 +1,855 @@
+{
+	"info": {
+		"_postman_id": "elearning-export-api-2025",
+		"name": "E-Learning Export API",
+		"description": "Collection for exporting MongoDB data from E-Learning platform.\n\nBefore using:\n1. Login via Auth/Login endpoint\n2. Copy the token from response\n3. Set {{token}} variable in Postman environment\n\nOr use the pre-request script to auto-login!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (Instructor)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Auto-save token to environment",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('token', response.token);",
+									"    console.log('✅ Token saved to environment');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"instructor1\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login as instructor to get authentication token.\nToken is automatically saved to environment variable."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Users",
+			"item": [
+				{
+					"name": "Export All Users (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/users/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"users",
+								"json"
+							]
+						},
+						"description": "Export all users as JSON file with complete MongoDB data."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Users (CSV)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/users/csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"users",
+								"csv"
+							]
+						},
+						"description": "Export all users as CSV file for Excel/Google Sheets."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Users (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/users/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"users",
+								"excel"
+							]
+						},
+						"description": "Export all users as Excel file with formatted headers."
+					},
+					"response": []
+				},
+				{
+					"name": "Export Students Only (Filtered)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/users/excel?role=student",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"users",
+								"excel"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "student",
+									"description": "Filter by role: student, instructor, or admin"
+								}
+							]
+						},
+						"description": "Export only students (filtered by role)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Courses",
+			"item": [
+				{
+					"name": "Export All Courses (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/courses/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"courses",
+								"json"
+							]
+						},
+						"description": "Export all courses with instructor and semester data."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Courses (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/courses/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"courses",
+								"excel"
+							]
+						},
+						"description": "Export all courses as Excel file."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Assignments",
+			"item": [
+				{
+					"name": "Export All Assignments (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/assignments/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"assignments",
+								"json"
+							]
+						},
+						"description": "Export all assignments from all courses."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Assignments (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/assignments/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"assignments",
+								"excel"
+							]
+						},
+						"description": "Export all assignments as Excel file."
+					},
+					"response": []
+				},
+				{
+					"name": "Export Assignments by Course",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/assignments/excel?courseId=YOUR_COURSE_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"assignments",
+								"excel"
+							],
+							"query": [
+								{
+									"key": "courseId",
+									"value": "YOUR_COURSE_ID",
+									"description": "Replace with actual course ID"
+								}
+							]
+						},
+						"description": "Export assignments for a specific course only."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Submissions",
+			"item": [
+				{
+					"name": "Export All Submissions (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/submissions/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"submissions",
+								"json"
+							]
+						},
+						"description": "Export all student submissions with grades."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Submissions (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/submissions/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"submissions",
+								"excel"
+							]
+						},
+						"description": "Export all submissions as Excel - perfect for grade analysis!"
+					},
+					"response": []
+				},
+				{
+					"name": "Export Submissions by Course",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/submissions/excel?courseId=YOUR_COURSE_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"submissions",
+								"excel"
+							],
+							"query": [
+								{
+									"key": "courseId",
+									"value": "YOUR_COURSE_ID",
+									"description": "Filter by course ID"
+								}
+							]
+						},
+						"description": "Export submissions for one course only."
+					},
+					"response": []
+				},
+				{
+					"name": "Export Submissions by Assignment",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/submissions/excel?assignmentId=YOUR_ASSIGNMENT_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"submissions",
+								"excel"
+							],
+							"query": [
+								{
+									"key": "assignmentId",
+									"value": "YOUR_ASSIGNMENT_ID",
+									"description": "Filter by assignment ID"
+								}
+							]
+						},
+						"description": "Export submissions for one assignment only."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Quizzes",
+			"item": [
+				{
+					"name": "Export All Quizzes (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/quizzes/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"quizzes",
+								"json"
+							]
+						},
+						"description": "Export all quizzes with complete configuration."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Quizzes (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/quizzes/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"quizzes",
+								"excel"
+							]
+						},
+						"description": "Export all quizzes as Excel file."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Quiz Attempts",
+			"item": [
+				{
+					"name": "Export All Quiz Attempts (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/quiz-attempts/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"quiz-attempts",
+								"json"
+							]
+						},
+						"description": "Export all quiz attempts with student answers and scores."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Quiz Attempts (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/quiz-attempts/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"quiz-attempts",
+								"excel"
+							]
+						},
+						"description": "Export all quiz attempts as Excel - great for grade analysis!"
+					},
+					"response": []
+				},
+				{
+					"name": "Export Attempts by Quiz",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/quiz-attempts/excel?quizId=YOUR_QUIZ_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"quiz-attempts",
+								"excel"
+							],
+							"query": [
+								{
+									"key": "quizId",
+									"value": "YOUR_QUIZ_ID",
+									"description": "Filter by quiz ID"
+								}
+							]
+						},
+						"description": "Export attempts for one quiz only."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Announcements",
+			"item": [
+				{
+					"name": "Export All Announcements (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/announcements/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"announcements",
+								"json"
+							]
+						},
+						"description": "Export all announcements."
+					},
+					"response": []
+				},
+				{
+					"name": "Export All Announcements (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/announcements/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"announcements",
+								"excel"
+							]
+						},
+						"description": "Export all announcements as Excel."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Full Database",
+			"item": [
+				{
+					"name": "Export Complete Database (Excel - Multiple Sheets)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/database/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"database",
+								"excel"
+							]
+						},
+						"description": "⭐ FULL BACKUP - Exports entire database!\n\nCreates ONE Excel file with 8 sheets:\n- Users\n- Courses\n- Assignments\n- Submissions\n- Quizzes\n- Quiz Attempts\n- Announcements\n- Semesters\n\nPerfect for:\n- Complete backups\n- End-of-semester archives\n- Data analysis across all collections"
+					},
+					"response": []
+				},
+				{
+					"name": "Export Complete Database (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/database/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"database",
+								"json"
+							]
+						},
+						"description": "Export entire database as JSON with all collections and statistics."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Student (Complete Profile)",
+			"item": [
+				{
+					"name": "Export Student Complete Data (Excel)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/student/YOUR_STUDENT_ID/excel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"student",
+								"YOUR_STUDENT_ID",
+								"excel"
+							]
+						},
+						"description": "⭐ STUDENT COMPLETE PROFILE\n\nExports ALL data related to ONE student in a single Excel file with 9 sheets:\n\n1. Student Info (personal data + statistics)\n2. Enrolled Courses\n3. Submissions (all assignments submitted)\n4. Quiz Attempts (all quiz results)\n5. Available Assignments\n6. Available Quizzes\n7. Announcements\n8. Notifications\n9. Groups\n\nIncludes Statistics:\n- Total courses enrolled\n- Assignments submitted\n- Average assignment grade\n- Quizzes completed\n- Average quiz score\n- Unread notifications\n- Group memberships\n\nPerfect for:\n- Student performance review\n- Academic records\n- Progress tracking\n- Parent-teacher conferences"
+					},
+					"response": []
+				},
+				{
+					"name": "Export Student Complete Data (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/student/YOUR_STUDENT_ID/json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"student",
+								"YOUR_STUDENT_ID",
+								"json"
+							]
+						},
+						"description": "Export all student data as JSON with complete MongoDB documents."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utilities",
+			"item": [
+				{
+					"name": "Cleanup Old Exports (7 days)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/export/cleanup?days=7",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"export",
+								"cleanup"
+							],
+							"query": [
+								{
+									"key": "days",
+									"value": "7",
+									"description": "Delete files older than this many days"
+								}
+							]
+						},
+						"description": "Delete exported files older than specified days.\nDefault: 7 days"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"health"
+							]
+						},
+						"description": "Check if server is running."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}
+

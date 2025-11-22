@@ -1,0 +1,1474 @@
+{
+  "collection": "student_68ece38a2523f69600863632_complete",
+  "exportedAt": "2025-10-17T03:30:23.349Z",
+  "filters": {},
+  "totalRecords": 1,
+  "data": [
+    {
+      "exportedAt": "2025-10-17T03:30:23.349Z",
+      "student": {
+        "_id": "68ece38a2523f69600863632",
+        "username": "tranmanhkhang",
+        "email": "kxckhang123@gmail.com",
+        "role": "student",
+        "firstName": "Tran Manh",
+        "lastName": "Khang",
+        "studentId": "20210021",
+        "department": "Faculty of Information Technology",
+        "profilePicture": "https://res.cloudinary.com/dqnjku7ic/image/upload/v1760498344/profile_pictures/user_68ece38a2523f69600863632_1760498337010.jpg",
+        "phoneNumber": "+84123456789",
+        "bio": "Computer Science Student",
+        "isActive": true,
+        "createdAt": "2025-10-13T11:33:30.744Z",
+        "updatedAt": "2025-10-15T03:23:43.424Z",
+        "__v": 0,
+        "resetPasswordExpires": "2025-10-15T03:38:43.423Z",
+        "resetPasswordToken": "1d102ef1fcc10458498ed01453b55c187fb3ce28f0f09cca003480e01ff3f666"
+      },
+      "statistics": {
+        "totalCourses": 1,
+        "totalAssignments": 5,
+        "submittedAssignments": 0,
+        "totalQuizzes": 4,
+        "completedQuizzes": 5,
+        "averageAssignmentGrade": 0,
+        "averageQuizScore": 2,
+        "totalAnnouncements": 2,
+        "unreadNotifications": 0,
+        "totalGroups": 1
+      },
+      "courses": [
+        {
+          "_id": "68ea917d8f7467f25bbfaecf",
+          "code": "CPM502071",
+          "name": "Cross-Platform Mobile Application Development",
+          "description": "Learn Flutter and Dart for building cross-platform mobile applications",
+          "instructor": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "semester": {
+            "_id": "68ea917d8f7467f25bbfaecd",
+            "name": "Semester 1, Academic Year 2025-2026",
+            "year": 2025
+          },
+          "students": [
+            "68ea917c8f7467f25bbfaea3",
+            "68ea917c8f7467f25bbfaea5",
+            "68ea917c8f7467f25bbfaea7",
+            "68ea917c8f7467f25bbfaea9",
+            "68ea917c8f7467f25bbfaeab",
+            "68ea917c8f7467f25bbfaead",
+            "68ea917c8f7467f25bbfaeaf",
+            "68ea917c8f7467f25bbfaeb1",
+            "68ea917c8f7467f25bbfaeb3",
+            "68ea917c8f7467f25bbfaeb5",
+            "68ece38a2523f69600863632",
+            "68ecf7b0f4bd21c6f0414b1f"
+          ],
+          "sessions": 15,
+          "color": "#2196F3",
+          "__v": 2,
+          "createdAt": "2025-10-11T17:18:53.611Z",
+          "updatedAt": "2025-10-13T13:01:13.003Z"
+        }
+      ],
+      "submissions": [],
+      "quizAttempts": [
+        {
+          "_id": "68ee5008609742ad14118319",
+          "quizId": {
+            "_id": "68eb6904b495681d24f261a4",
+            "courseId": {
+              "_id": "68ea917d8f7467f25bbfaecf",
+              "code": "CPM502071",
+              "name": "Cross-Platform Mobile Application Development"
+            },
+            "title": "ds"
+          },
+          "studentId": "68ece38a2523f69600863632",
+          "attemptNumber": 1,
+          "startTime": "2025-10-14T13:28:40.316Z",
+          "timeSpent": 2,
+          "duration": 30,
+          "questions": [
+            {
+              "questionId": "68ea9ece7d085a84d428a3d1",
+              "questionText": "What does the async keyword do in Dart?",
+              "choices": [
+                {
+                  "text": "Makes a function return a Future",
+                  "isCorrect": true,
+                  "_id": "68ee5008609742ad1411831b"
+                },
+                {
+                  "text": "Makes a function run faster",
+                  "isCorrect": false,
+                  "_id": "68ee5008609742ad1411831c"
+                },
+                {
+                  "text": "Prevents errors in code",
+                  "isCorrect": false,
+                  "_id": "68ee5008609742ad1411831d"
+                },
+                {
+                  "text": "Creates a new thread",
+                  "isCorrect": false,
+                  "_id": "68ee5008609742ad1411831e"
+                }
+              ],
+              "difficulty": "hard",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ee5008609742ad1411831a"
+            }
+          ],
+          "totalQuestions": 1,
+          "correctAnswers": 0,
+          "score": 0,
+          "pointsEarned": 0,
+          "totalPoints": 100,
+          "status": "submitted",
+          "ipAddress": "::1",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+          "createdAt": "2025-10-14T13:28:40.426Z",
+          "updatedAt": "2025-10-14T13:28:42.885Z",
+          "__v": 0,
+          "endTime": "2025-10-14T13:28:42.883Z",
+          "submissionTime": "2025-10-14T13:28:42.883Z"
+        },
+        {
+          "_id": "68ee52204286f8f5532abf82",
+          "quizId": {
+            "_id": "68eba65ad86d1451663047b8",
+            "courseId": {
+              "_id": "68ea917d8f7467f25bbfaecf",
+              "code": "CPM502071",
+              "name": "Cross-Platform Mobile Application Development"
+            },
+            "title": "da"
+          },
+          "studentId": "68ece38a2523f69600863632",
+          "attemptNumber": 1,
+          "startTime": "2025-10-14T13:37:36.149Z",
+          "timeSpent": 3,
+          "duration": 30,
+          "questions": [
+            {
+              "questionId": "68ea9ece7d085a84d428a3cc",
+              "questionText": "Which state management solution is built by the Flutter team?",
+              "choices": [
+                {
+                  "text": "Redux",
+                  "isCorrect": false,
+                  "_id": "68ee52204286f8f5532abf84"
+                },
+                {
+                  "text": "MobX",
+                  "isCorrect": false,
+                  "_id": "68ee52204286f8f5532abf85"
+                },
+                {
+                  "text": "Provider",
+                  "isCorrect": true,
+                  "_id": "68ee52204286f8f5532abf86"
+                },
+                {
+                  "text": "GetX",
+                  "isCorrect": false,
+                  "_id": "68ee52204286f8f5532abf87"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ee52204286f8f5532abf83"
+            }
+          ],
+          "totalQuestions": 1,
+          "correctAnswers": 0,
+          "score": 0,
+          "pointsEarned": 0,
+          "totalPoints": 100,
+          "status": "submitted",
+          "ipAddress": "::1",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+          "createdAt": "2025-10-14T13:37:36.294Z",
+          "updatedAt": "2025-10-14T13:37:39.317Z",
+          "__v": 0,
+          "endTime": "2025-10-14T13:37:39.314Z",
+          "submissionTime": "2025-10-14T13:37:39.314Z"
+        },
+        {
+          "_id": "68ee52344286f8f5532abfcf",
+          "quizId": {
+            "_id": "68ebdc1ec4222bdfe86bfabc",
+            "courseId": {
+              "_id": "68ea917d8f7467f25bbfaecf",
+              "code": "CPM502071",
+              "name": "Cross-Platform Mobile Application Development"
+            },
+            "title": "sa"
+          },
+          "studentId": "68ece38a2523f69600863632",
+          "attemptNumber": 1,
+          "startTime": "2025-10-14T13:37:56.777Z",
+          "timeSpent": 24,
+          "duration": 30,
+          "questions": [
+            {
+              "questionId": "68ea9ece7d085a84d428a3c7",
+              "questionText": "What is the purpose of the BuildContext in Flutter?",
+              "choices": [
+                {
+                  "text": "To store application state",
+                  "isCorrect": false,
+                  "_id": "68ee52344286f8f5532abfd1"
+                },
+                {
+                  "text": "To locate widgets in the widget tree",
+                  "isCorrect": true,
+                  "_id": "68ee52344286f8f5532abfd2"
+                },
+                {
+                  "text": "To manage HTTP connections",
+                  "isCorrect": false,
+                  "_id": "68ee52344286f8f5532abfd3"
+                },
+                {
+                  "text": "To handle user input",
+                  "isCorrect": false,
+                  "_id": "68ee52344286f8f5532abfd4"
+                }
+              ],
+              "difficulty": "hard",
+              "selectedAnswer": [
+                "To manage HTTP connections"
+              ],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ee52344286f8f5532abfd0"
+            }
+          ],
+          "totalQuestions": 1,
+          "correctAnswers": 0,
+          "score": 0,
+          "pointsEarned": 0,
+          "totalPoints": 100,
+          "status": "submitted",
+          "ipAddress": "::1",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+          "createdAt": "2025-10-14T13:37:56.885Z",
+          "updatedAt": "2025-10-14T13:38:21.397Z",
+          "__v": 1,
+          "endTime": "2025-10-14T13:38:21.393Z",
+          "submissionTime": "2025-10-14T13:38:21.393Z"
+        },
+        {
+          "_id": "68ef128012d70daeca13da34",
+          "quizId": {
+            "_id": "68eaa007b732dee4c24b4e1e",
+            "courseId": {
+              "_id": "68ea917d8f7467f25bbfaecf",
+              "code": "CPM502071",
+              "name": "Cross-Platform Mobile Application Development"
+            },
+            "title": "Flutter run"
+          },
+          "studentId": "68ece38a2523f69600863632",
+          "attemptNumber": 1,
+          "startTime": "2025-10-15T03:18:24.393Z",
+          "timeSpent": 7,
+          "duration": 30,
+          "questions": [
+            {
+              "questionId": "68ea9ece7d085a84d428a3c7",
+              "questionText": "What is the purpose of the BuildContext in Flutter?",
+              "choices": [
+                {
+                  "text": "To store application state",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da36"
+                },
+                {
+                  "text": "To locate widgets in the widget tree",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da37"
+                },
+                {
+                  "text": "To manage HTTP connections",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da38"
+                },
+                {
+                  "text": "To handle user input",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da39"
+                }
+              ],
+              "difficulty": "hard",
+              "selectedAnswer": [
+                "To handle user input"
+              ],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da35"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3cc",
+              "questionText": "Which state management solution is built by the Flutter team?",
+              "choices": [
+                {
+                  "text": "Redux",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da3b"
+                },
+                {
+                  "text": "MobX",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da3c"
+                },
+                {
+                  "text": "Provider",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da3d"
+                },
+                {
+                  "text": "GetX",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da3e"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [
+                "Provider"
+              ],
+              "isCorrect": true,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da3a"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3d1",
+              "questionText": "What does the async keyword do in Dart?",
+              "choices": [
+                {
+                  "text": "Makes a function return a Future",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da40"
+                },
+                {
+                  "text": "Makes a function run faster",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da41"
+                },
+                {
+                  "text": "Prevents errors in code",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da42"
+                },
+                {
+                  "text": "Creates a new thread",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da43"
+                }
+              ],
+              "difficulty": "hard",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da3f"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3d6",
+              "questionText": "Which Flutter layout widget allows children to be positioned absolutely?",
+              "choices": [
+                {
+                  "text": "Column",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da45"
+                },
+                {
+                  "text": "Row",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da46"
+                },
+                {
+                  "text": "Stack",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da47"
+                },
+                {
+                  "text": "Wrap",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da48"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da44"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3a9",
+              "questionText": "What is Flutter?",
+              "choices": [
+                {
+                  "text": "A mobile framework by Google",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da4a"
+                },
+                {
+                  "text": "A programming language",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da4b"
+                },
+                {
+                  "text": "A database system",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da4c"
+                },
+                {
+                  "text": "An operating system",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da4d"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da49"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3ae",
+              "questionText": "Which programming language is used by Flutter?",
+              "choices": [
+                {
+                  "text": "Java",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da4f"
+                },
+                {
+                  "text": "Kotlin",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da50"
+                },
+                {
+                  "text": "Dart",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da51"
+                },
+                {
+                  "text": "Swift",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da52"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da4e"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3b3",
+              "questionText": "What is a StatefulWidget in Flutter?",
+              "choices": [
+                {
+                  "text": "A widget that never changes",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da54"
+                },
+                {
+                  "text": "A widget that can change its state during runtime",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da55"
+                },
+                {
+                  "text": "A widget for displaying images",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da56"
+                },
+                {
+                  "text": "A widget for handling HTTP requests",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da57"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da53"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3b8",
+              "questionText": "Which method is called when a StatefulWidget is first created?",
+              "choices": [
+                {
+                  "text": "build()",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da59"
+                },
+                {
+                  "text": "initState()",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da5a"
+                },
+                {
+                  "text": "dispose()",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da5b"
+                },
+                {
+                  "text": "setState()",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da5c"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da58"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3bd",
+              "questionText": "What is hot reload in Flutter?",
+              "choices": [
+                {
+                  "text": "A feature to restart the entire application",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da5e"
+                },
+                {
+                  "text": "A feature to inject updated source code into the running app",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da5f"
+                },
+                {
+                  "text": "A debugging tool",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da60"
+                },
+                {
+                  "text": "A testing framework",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da61"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da5d"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3c2",
+              "questionText": "Which Flutter widget is used to display scrollable content?",
+              "choices": [
+                {
+                  "text": "Container",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da63"
+                },
+                {
+                  "text": "ListView",
+                  "isCorrect": true,
+                  "_id": "68ef128012d70daeca13da64"
+                },
+                {
+                  "text": "Text",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da65"
+                },
+                {
+                  "text": "AppBar",
+                  "isCorrect": false,
+                  "_id": "68ef128012d70daeca13da66"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68ef128012d70daeca13da62"
+            }
+          ],
+          "totalQuestions": 10,
+          "correctAnswers": 1,
+          "score": 10,
+          "pointsEarned": 10,
+          "totalPoints": 100,
+          "status": "submitted",
+          "ipAddress": "::1",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+          "createdAt": "2025-10-15T03:18:24.581Z",
+          "updatedAt": "2025-10-15T03:18:32.395Z",
+          "__v": 2,
+          "endTime": "2025-10-15T03:18:32.390Z",
+          "submissionTime": "2025-10-15T03:18:32.390Z"
+        },
+        {
+          "_id": "68f1ac90de497819612ac1dd",
+          "quizId": null,
+          "studentId": "68ece38a2523f69600863632",
+          "attemptNumber": 1,
+          "startTime": "2025-10-17T02:40:16.113Z",
+          "timeSpent": 21,
+          "duration": 30,
+          "questions": [
+            {
+              "questionId": "68ea9ece7d085a84d428a3c2",
+              "questionText": "Which Flutter widget is used to display scrollable content?",
+              "choices": [
+                {
+                  "text": "Container",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1df"
+                },
+                {
+                  "text": "ListView",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1e0"
+                },
+                {
+                  "text": "Text",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1e1"
+                },
+                {
+                  "text": "AppBar",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1e2"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [
+                "Text"
+              ],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1de"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3bd",
+              "questionText": "What is hot reload in Flutter?",
+              "choices": [
+                {
+                  "text": "A feature to restart the entire application",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1e4"
+                },
+                {
+                  "text": "A feature to inject updated source code into the running app",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1e5"
+                },
+                {
+                  "text": "A debugging tool",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1e6"
+                },
+                {
+                  "text": "A testing framework",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1e7"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [
+                "A debugging tool"
+              ],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1e3"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3b8",
+              "questionText": "Which method is called when a StatefulWidget is first created?",
+              "choices": [
+                {
+                  "text": "build()",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1e9"
+                },
+                {
+                  "text": "initState()",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1ea"
+                },
+                {
+                  "text": "dispose()",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1eb"
+                },
+                {
+                  "text": "setState()",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1ec"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [
+                "setState()"
+              ],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1e8"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3c7",
+              "questionText": "What is the purpose of the BuildContext in Flutter?",
+              "choices": [
+                {
+                  "text": "To store application state",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1ee"
+                },
+                {
+                  "text": "To locate widgets in the widget tree",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1ef"
+                },
+                {
+                  "text": "To manage HTTP connections",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f0"
+                },
+                {
+                  "text": "To handle user input",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f1"
+                }
+              ],
+              "difficulty": "hard",
+              "selectedAnswer": [
+                "To handle user input"
+              ],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1ed"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3cc",
+              "questionText": "Which state management solution is built by the Flutter team?",
+              "choices": [
+                {
+                  "text": "Redux",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f3"
+                },
+                {
+                  "text": "MobX",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f4"
+                },
+                {
+                  "text": "Provider",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1f5"
+                },
+                {
+                  "text": "GetX",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f6"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1f2"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3d6",
+              "questionText": "Which Flutter layout widget allows children to be positioned absolutely?",
+              "choices": [
+                {
+                  "text": "Column",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f8"
+                },
+                {
+                  "text": "Row",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1f9"
+                },
+                {
+                  "text": "Stack",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1fa"
+                },
+                {
+                  "text": "Wrap",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1fb"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1f7"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3b3",
+              "questionText": "What is a StatefulWidget in Flutter?",
+              "choices": [
+                {
+                  "text": "A widget that never changes",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1fd"
+                },
+                {
+                  "text": "A widget that can change its state during runtime",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac1fe"
+                },
+                {
+                  "text": "A widget for displaying images",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac1ff"
+                },
+                {
+                  "text": "A widget for handling HTTP requests",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac200"
+                }
+              ],
+              "difficulty": "medium",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac1fc"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3a9",
+              "questionText": "What is Flutter?",
+              "choices": [
+                {
+                  "text": "A mobile framework by Google",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac202"
+                },
+                {
+                  "text": "A programming language",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac203"
+                },
+                {
+                  "text": "A database system",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac204"
+                },
+                {
+                  "text": "An operating system",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac205"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac201"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3d1",
+              "questionText": "What does the async keyword do in Dart?",
+              "choices": [
+                {
+                  "text": "Makes a function return a Future",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac207"
+                },
+                {
+                  "text": "Makes a function run faster",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac208"
+                },
+                {
+                  "text": "Prevents errors in code",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac209"
+                },
+                {
+                  "text": "Creates a new thread",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac20a"
+                }
+              ],
+              "difficulty": "hard",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac206"
+            },
+            {
+              "questionId": "68ea9ece7d085a84d428a3ae",
+              "questionText": "Which programming language is used by Flutter?",
+              "choices": [
+                {
+                  "text": "Java",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac20c"
+                },
+                {
+                  "text": "Kotlin",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac20d"
+                },
+                {
+                  "text": "Dart",
+                  "isCorrect": true,
+                  "_id": "68f1ac90de497819612ac20e"
+                },
+                {
+                  "text": "Swift",
+                  "isCorrect": false,
+                  "_id": "68f1ac90de497819612ac20f"
+                }
+              ],
+              "difficulty": "easy",
+              "selectedAnswer": [],
+              "isCorrect": false,
+              "timeSpent": 0,
+              "_id": "68f1ac90de497819612ac20b"
+            }
+          ],
+          "totalQuestions": 10,
+          "correctAnswers": 0,
+          "score": 0,
+          "pointsEarned": 0,
+          "totalPoints": 100,
+          "status": "submitted",
+          "ipAddress": "::1",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+          "createdAt": "2025-10-17T02:40:16.259Z",
+          "updatedAt": "2025-10-17T02:40:37.346Z",
+          "__v": 4,
+          "endTime": "2025-10-17T02:40:37.343Z",
+          "submissionTime": "2025-10-17T02:40:37.343Z"
+        }
+      ],
+      "assignments": [
+        {
+          "_id": "68ea917d8f7467f25bbfaee4",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "createdByName": "Mai Van Manh",
+          "title": "Lab 01: Flutter Basics",
+          "description": "Complete the basic Flutter exercises including widget creation and state management.",
+          "groupIds": [],
+          "startDate": "2025-10-11T17:18:53.829Z",
+          "deadline": "2025-10-18T17:18:52.125Z",
+          "allowLateSubmission": false,
+          "maxAttempts": 1,
+          "allowedFileTypes": [],
+          "maxFileSize": 10485760,
+          "attachments": [
+            {
+              "mimeType": "application/pdf",
+              "_id": "68ea917d8f7467f25bbfaee5"
+            }
+          ],
+          "points": 100,
+          "viewedBy": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "viewedAt": "2025-10-11T17:23:52.226Z",
+              "_id": "68ea92a824a7c757f7c973d5"
+            },
+            {
+              "userId": "68ea917c8f7467f25bbfaea3",
+              "viewedAt": "2025-10-12T05:17:51.745Z",
+              "_id": "68eb39ffc64303f125eef252"
+            },
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-14T14:05:09.366Z",
+              "_id": "68ee589504a678a796a73a8c"
+            }
+          ],
+          "__v": 3,
+          "createdAt": "2025-10-11T17:18:53.830Z",
+          "updatedAt": "2025-10-14T14:05:09.368Z"
+        },
+        {
+          "_id": "68ea917d8f7467f25bbfaee6",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "createdByName": "Mai Van Manh",
+          "title": "Lab 02: State Management",
+          "description": "Implement state management using Provider and Riverpod.",
+          "groupIds": [],
+          "startDate": "2025-10-11T17:18:53.829Z",
+          "deadline": "2025-10-25T17:18:52.125Z",
+          "allowLateSubmission": false,
+          "maxAttempts": 1,
+          "allowedFileTypes": [],
+          "maxFileSize": 10485760,
+          "attachments": [],
+          "points": 100,
+          "viewedBy": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "viewedAt": "2025-10-12T04:59:51.780Z",
+              "_id": "68eb35c7c64303f125eee80a"
+            },
+            {
+              "userId": "68ea917c8f7467f25bbfaea3",
+              "viewedAt": "2025-10-12T05:18:12.965Z",
+              "_id": "68eb3a14c64303f125eef259"
+            },
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-14T14:05:01.951Z",
+              "_id": "68ee588d04a678a796a73a78"
+            }
+          ],
+          "__v": 3,
+          "createdAt": "2025-10-11T17:18:53.830Z",
+          "updatedAt": "2025-10-14T14:05:01.953Z"
+        },
+        {
+          "_id": "68eb68e3b495681d24f26173",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "createdByName": "Mai Van Manh",
+          "title": "ds",
+          "description": "ds",
+          "groupIds": [],
+          "startDate": "2025-10-12T08:37:00.000Z",
+          "deadline": "2025-10-19T16:59:00.000Z",
+          "allowLateSubmission": true,
+          "lateDeadline": "2025-10-21T16:59:00.000Z",
+          "maxAttempts": 1,
+          "allowedFileTypes": [],
+          "maxFileSize": 10485760,
+          "attachments": [],
+          "points": 100,
+          "viewedBy": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea3",
+              "viewedAt": "2025-10-12T08:40:14.345Z",
+              "_id": "68eb696eb495681d24f261e0"
+            },
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-14T14:05:07.587Z",
+              "_id": "68ee589304a678a796a73a85"
+            }
+          ],
+          "createdAt": "2025-10-12T08:37:55.857Z",
+          "updatedAt": "2025-10-14T14:05:07.590Z",
+          "__v": 2
+        },
+        {
+          "_id": "68eba648d86d145166304787",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "createdByName": "Mai Van Manh",
+          "title": "ds",
+          "description": "ds",
+          "groupIds": [],
+          "startDate": "2025-10-12T12:59:00.000Z",
+          "deadline": "2025-10-19T16:59:00.000Z",
+          "allowLateSubmission": false,
+          "lateDeadline": null,
+          "maxAttempts": 1,
+          "allowedFileTypes": [],
+          "maxFileSize": 10485760,
+          "attachments": [],
+          "points": 100,
+          "viewedBy": [
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-14T14:05:06.060Z",
+              "_id": "68ee589204a678a796a73a80"
+            }
+          ],
+          "createdAt": "2025-10-12T12:59:52.774Z",
+          "updatedAt": "2025-10-14T14:05:06.061Z",
+          "__v": 1
+        },
+        {
+          "_id": "68ebdc10c4222bdfe86bfa7b",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "createdByName": "Mai Van Manh",
+          "title": "dsas",
+          "description": "aas",
+          "groupIds": [],
+          "startDate": "2025-10-12T16:49:00.000Z",
+          "deadline": "2025-10-19T16:59:00.000Z",
+          "allowLateSubmission": false,
+          "lateDeadline": null,
+          "maxAttempts": 1,
+          "allowedFileTypes": [],
+          "maxFileSize": 10485760,
+          "attachments": [],
+          "points": 100,
+          "viewedBy": [
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-14T14:05:04.510Z",
+              "_id": "68ee589004a678a796a73a7c"
+            }
+          ],
+          "createdAt": "2025-10-12T16:49:20.309Z",
+          "updatedAt": "2025-10-14T14:05:04.512Z",
+          "__v": 1
+        }
+      ],
+      "quizzes": [
+        {
+          "_id": "68eaa007b732dee4c24b4e1e",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "title": "Flutter run",
+          "description": "",
+          "groupIds": [],
+          "openDate": "2025-10-10T21:20:00.000Z",
+          "closeDate": "2025-10-18T19:59:00.000Z",
+          "duration": 30,
+          "maxAttempts": 1,
+          "questionStructure": {
+            "easy": 0,
+            "medium": 0,
+            "hard": 0
+          },
+          "randomizeQuestions": false,
+          "selectedQuestions": [
+            "68ea9ece7d085a84d428a3c7",
+            "68ea9ece7d085a84d428a3cc",
+            "68ea9ece7d085a84d428a3d1",
+            "68ea9ece7d085a84d428a3d6",
+            "68ea9ece7d085a84d428a3a9",
+            "68ea9ece7d085a84d428a3ae",
+            "68ea9ece7d085a84d428a3b3",
+            "68ea9ece7d085a84d428a3b8",
+            "68ea9ece7d085a84d428a3bd",
+            "68ea9ece7d085a84d428a3c2"
+          ],
+          "totalPoints": 100,
+          "isActive": true,
+          "status": "active",
+          "createdAt": "2025-10-11T18:20:55.973Z",
+          "updatedAt": "2025-10-12T05:36:50.856Z",
+          "__v": 0
+        },
+        {
+          "_id": "68eb6904b495681d24f261a4",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "title": "ds",
+          "description": "ds",
+          "groupIds": [],
+          "openDate": "2025-10-12T08:38:00.000Z",
+          "closeDate": "2025-10-19T16:59:00.000Z",
+          "duration": 30,
+          "maxAttempts": 1,
+          "allowRetakes": false,
+          "shuffleQuestions": true,
+          "showResultsImmediately": false,
+          "questionStructure": {
+            "easy": 0,
+            "medium": 0,
+            "hard": 0
+          },
+          "randomizeQuestions": true,
+          "selectedQuestions": [
+            "68ea9ece7d085a84d428a3d1"
+          ],
+          "totalPoints": 100,
+          "isActive": true,
+          "status": "active",
+          "createdAt": "2025-10-12T08:38:28.337Z",
+          "updatedAt": "2025-10-12T08:38:28.337Z",
+          "__v": 0
+        },
+        {
+          "_id": "68eba65ad86d1451663047b8",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "title": "da",
+          "description": "da",
+          "groupIds": [],
+          "openDate": "2025-10-12T13:00:00.000Z",
+          "closeDate": "2025-10-19T16:59:00.000Z",
+          "duration": 30,
+          "maxAttempts": 1,
+          "allowRetakes": false,
+          "shuffleQuestions": true,
+          "showResultsImmediately": false,
+          "questionStructure": {
+            "easy": 0,
+            "medium": 0,
+            "hard": 0
+          },
+          "randomizeQuestions": true,
+          "selectedQuestions": [
+            "68ea9ece7d085a84d428a3cc"
+          ],
+          "totalPoints": 100,
+          "isActive": true,
+          "status": "active",
+          "createdAt": "2025-10-12T13:00:10.746Z",
+          "updatedAt": "2025-10-12T13:00:10.746Z",
+          "__v": 0
+        },
+        {
+          "_id": "68ebdc1ec4222bdfe86bfabc",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "createdBy": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "title": "sa",
+          "description": "sa",
+          "groupIds": [],
+          "openDate": "2025-10-12T16:49:00.000Z",
+          "closeDate": "2025-10-19T16:59:00.000Z",
+          "duration": 30,
+          "maxAttempts": 1,
+          "allowRetakes": false,
+          "shuffleQuestions": true,
+          "showResultsImmediately": false,
+          "questionStructure": {
+            "easy": 0,
+            "medium": 0,
+            "hard": 0
+          },
+          "randomizeQuestions": true,
+          "selectedQuestions": [
+            "68ea9ece7d085a84d428a3c7"
+          ],
+          "totalPoints": 100,
+          "isActive": true,
+          "status": "active",
+          "createdAt": "2025-10-12T16:49:34.300Z",
+          "updatedAt": "2025-10-12T16:49:34.300Z",
+          "__v": 0
+        }
+      ],
+      "announcements": [
+        {
+          "_id": "68ea917d8f7467f25bbfaee2",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "title": "Lab Session Schedule",
+          "content": "Lab sessions will be held every Monday and Wednesday. Please check the schedule for your group.",
+          "authorId": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "authorName": "Mai Van Manh",
+          "groupIds": [],
+          "attachments": [],
+          "comments": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "userName": "Mai Van Manh",
+              "text": "Ok thầy",
+              "createdAt": "2025-10-11T17:38:36.224Z",
+              "_id": "68ea961c24a7c757f7c97527"
+            },
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "userName": "Mai Van Manh",
+              "text": "chao moi nguoi",
+              "createdAt": "2025-10-12T05:11:53.956Z",
+              "_id": "68eb3899c64303f125eee992"
+            }
+          ],
+          "viewedBy": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "viewedAt": "2025-10-11T17:21:19.625Z",
+              "_id": "68ea920f24a7c757f7c973ca"
+            },
+            {
+              "userId": "68ea917c8f7467f25bbfaea3",
+              "viewedAt": "2025-10-12T05:17:30.192Z",
+              "_id": "68eb39eac64303f125eef1ed"
+            },
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-13T13:01:36.117Z",
+              "_id": "68ecf830f4bd21c6f0414b77"
+            },
+            {
+              "userId": "68ece38a2523f69600863632",
+              "viewedAt": "2025-10-17T02:45:51.180Z",
+              "_id": "68f1addfad6daa30b8d50cb8"
+            }
+          ],
+          "downloadedBy": [],
+          "__v": 6,
+          "createdAt": "2025-10-11T17:18:53.773Z",
+          "updatedAt": "2025-10-17T02:45:51.189Z"
+        },
+        {
+          "_id": "68ea917d8f7467f25bbfaee0",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "title": "Welcome to Cross-Platform Mobile Development!",
+          "content": "Welcome to the course! We will be learning Flutter and Dart to build amazing mobile applications.Please review the syllabus attached below.",
+          "authorId": {
+            "_id": "68ea917c8f7467f25bbfaea1",
+            "username": "maivanmanh"
+          },
+          "authorName": "Mai Van Manh",
+          "groupIds": [],
+          "attachments": [
+            {
+              "mimeType": "application/pdf",
+              "_id": "68ea917d8f7467f25bbfaee1"
+            }
+          ],
+          "comments": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "userName": "Mai Van Manh",
+              "text": "gà",
+              "createdAt": "2025-10-11T17:24:24.038Z",
+              "_id": "68ea92c824a7c757f7c973f3"
+            }
+          ],
+          "viewedBy": [
+            {
+              "userId": "68ea917c8f7467f25bbfaea1",
+              "viewedAt": "2025-10-11T17:24:19.590Z",
+              "_id": "68ea92c324a7c757f7c973ed"
+            },
+            {
+              "userId": "68ea917c8f7467f25bbfaea3",
+              "viewedAt": "2025-10-12T08:04:10.227Z",
+              "_id": "68eb60fa21cd04dd42f5fe5e"
+            },
+            {
+              "userId": "68ecf7b0f4bd21c6f0414b1f",
+              "viewedAt": "2025-10-13T13:01:33.723Z",
+              "_id": "68ecf82df4bd21c6f0414b5e"
+            }
+          ],
+          "downloadedBy": [],
+          "__v": 4,
+          "createdAt": "2025-10-11T17:18:53.772Z",
+          "updatedAt": "2025-10-13T13:01:33.726Z"
+        }
+      ],
+      "notifications": [
+        {
+          "_id": "68ecf75ff4bd21c6f0414b19",
+          "userId": "68ece38a2523f69600863632",
+          "type": "message",
+          "title": "Join Request Approved",
+          "message": "Your request to join Cross-Platform Mobile Application Development has been approved!",
+          "data": {
+            "courseId": "68ea917d8f7467f25bbfaecf",
+            "courseName": "Cross-Platform Mobile Application Development"
+          },
+          "isRead": true,
+          "createdAt": "2025-10-13T12:58:07.483Z",
+          "updatedAt": "2025-10-14T13:28:30.398Z",
+          "__v": 0,
+          "readAt": "2025-10-14T13:28:30.394Z"
+        }
+      ],
+      "groups": [
+        {
+          "_id": "68ea917d8f7467f25bbfaed4",
+          "name": "Group 1",
+          "courseId": {
+            "_id": "68ea917d8f7467f25bbfaecf",
+            "code": "CPM502071",
+            "name": "Cross-Platform Mobile Application Development"
+          },
+          "members": [
+            "68ea917c8f7467f25bbfaea3",
+            "68ea917c8f7467f25bbfaea5",
+            "68ea917c8f7467f25bbfaea7",
+            "68ece38a2523f69600863632"
+          ],
+          "createdBy": "68ea917c8f7467f25bbfaea3",
+          "description": "Study group 1 for Cross-Platform Mobile Application Development",
+          "__v": 1,
+          "createdAt": "2025-10-11T17:18:53.686Z",
+          "updatedAt": "2025-10-13T12:58:07.367Z"
+        }
+      ]
+    }
+  ]
+}
