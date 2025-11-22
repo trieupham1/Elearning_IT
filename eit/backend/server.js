@@ -6,6 +6,17 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+  console.error('❌ Missing required environment variables:');
+  missingVars.forEach(varName => console.error(`   - ${varName}`));
+  console.error('\nPlease create a .env file with the required variables.');
+  process.exit(1);
+}
+
 const app = express();
 
 // Middleware
@@ -37,7 +48,6 @@ const adminRoutes = require('./routes/admin');
 const adminDashboardRoutes = require('./routes/adminDashboard');
 const adminReportsRoutes = require('./routes/adminReports');
 const { router: fileRoutes, initializeGridFS } = require('./routes/files');
-const videoRoutes = require('./routes/videos');
 const attendanceRoutes = require('./routes/attendance');
 const codeAssignmentRoutes = require('./routes/code-assignments');
 
@@ -66,13 +76,36 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/admin/dashboard', adminDashboardRoutes);
 app.use('/api/admin/reports', adminReportsRoutes);
 app.use('/api/files', fileRoutes);
-app.use('/api/videos', videoRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/code', codeAssignmentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
+});
+
+// 404 handler for undefined routes
+app.use((req, res, next) => {
+  res.status(404).json({ 
+    error: 'Not Found',
+    message: `Cannot ${req.method} ${req.path}`
+  });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Server Error:', err);
+  
+  // Don't leak error details in production
+  const message = process.env.NODE_ENV === 'production' 
+    ? 'Internal Server Error' 
+    : err.message;
+  
+  res.status(err.statusCode || 500).json({
+    error: err.name || 'ServerError',
+    message: message,
+    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+  });
 });
 
 // MongoDB connection
@@ -103,23 +136,12 @@ mongoose.connect(process.env.MONGODB_URI)
     const server = app.listen(PORT, HOST, () => {
       console.log(`✅ Server running on port ${PORT}`);
       console.log(`📡 Local: http://localhost:${PORT}`);
-      console.log(`🌐 Network: http://192.168.1.224:${PORT}`);
+      console.log(`🌐 Network: http://YOUR_IP:${PORT}`);
       console.log(`📱 Android device can connect to the Network URL`);
     });
     
-    // Setup Socket.IO for WebRTC signaling
-    const socketIO = require('socket.io');
-    const io = socketIO(server, {
-      cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-      }
-    });
-    
-    // Initialize WebRTC signaling
-    const setupWebRTCSignaling = require('./utils/webrtcSignaling');
-    setupWebRTCSignaling(io);
-    console.log('✓ WebRTC signaling server initialized');
+    // Store server instance globally for graceful shutdown
+    global.server = server;
   })
   .catch((error) => {
     console.error('MongoDB connection error:', error);
@@ -201,5 +223,52 @@ function startScheduledTasks() {
   console.log('   - Checking for expired quizzes every 5 minutes');
   console.log('   - Checking for deadline reminders daily at 9:00 AM');
 }
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('Shutting down server due to unhandled promise rejection');
+  process.exit(1);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  console.error('Shutting down server due to uncaught exception');
+  process.exit(1);
+});
+
+// Graceful shutdown on SIGTERM
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM received, closing server gracefully');
+  if (global.server) {
+    global.server.close(() => {
+      console.log('✅ HTTP server closed');
+      mongoose.connection.close(false, () => {
+        console.log('✅ MongoDB connection closed');
+        process.exit(0);
+      });
+    });
+  }
+});
+
+// Graceful shutdown on SIGINT (Ctrl+C)
+process.on('SIGINT', () => {
+  console.log('\n👋 SIGINT received, closing server gracefully');
+  if (global.server) {
+    global.server.close(() => {
+      console.log('✅ HTTP server closed');
+      mongoose.connection.close(false, () => {
+        console.log('✅ MongoDB connection closed');
+        process.exit(0);
+      });
+    });
+  } else {
+    mongoose.connection.close(false, () => {
+      console.log('✅ MongoDB connection closed');
+      process.exit(0);
+    });
+  }
+});
 
 module.exports = app;

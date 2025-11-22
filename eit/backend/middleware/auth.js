@@ -36,9 +36,18 @@ const adminOnly = (req, res, next) => {
   next();
 };
 
+// Add admin or instructor middleware
+const adminOrInstructor = (req, res, next) => {
+  if (req.userRole !== 'admin' && req.userRole !== 'instructor') {
+    return res.status(403).json({ message: 'Access denied. Admins or instructors only.' });
+  }
+  next();
+};
+
 // Export as default and named exports for compatibility
 module.exports = auth;
 module.exports.auth = auth;
 module.exports.authMiddleware = auth;
 module.exports.instructorOnly = instructorOnly;
 module.exports.adminOnly = adminOnly;
+module.exports.adminOrInstructor = adminOrInstructor;

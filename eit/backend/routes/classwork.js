@@ -11,7 +11,7 @@ const { authMiddleware, instructorOnly } = require('../middleware/auth');
 const { notifyNewAssignment, notifyNewQuiz, notifyNewMaterial } = require('../utils/notificationHelper');
 
 const router = express.Router();
-
+  
 // Get all classwork for a course (unified endpoint)
 router.get('/course/:courseId', authMiddleware, async (req, res) => {
   try {
