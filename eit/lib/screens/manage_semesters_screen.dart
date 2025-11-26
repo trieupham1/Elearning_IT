@@ -44,7 +44,6 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
     int selectedSemester = 1;
     DateTime startDate = DateTime.now();
     DateTime endDate = DateTime.now().add(const Duration(days: 120));
-    bool setAsActive = false;
 
     showDialog(
       context: context,
@@ -61,7 +60,7 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
                     controller: nameController,
                     decoration: const InputDecoration(
                       labelText: 'Semester Name',
-                      hintText: 'e.g., Semester 1, Academic Year 2025-2026',
+                      hintText: 'e.g., Fall 2025',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -130,17 +129,6 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
                       }
                     },
                   ),
-                  const SizedBox(height: 8),
-                  CheckboxListTile(
-                    title: const Text('Set as Active Semester'),
-                    subtitle: const Text(
-                      'This will deactivate all other semesters',
-                    ),
-                    value: setAsActive,
-                    onChanged: (value) {
-                      setDialogState(() => setAsActive = value ?? false);
-                    },
-                  ),
                 ],
               ),
             ),
@@ -160,53 +148,13 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
                   return;
                 }
 
-                try {
-                  Navigator.pop(context);
-
-                  // Show loading
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) =>
-                        const Center(child: CircularProgressIndicator()),
-                  );
-
-                  final code = '$selectedSemester-${yearController.text}';
-                  final name = nameController.text;
-                  final year =
-                      int.tryParse(yearController.text.split('-')[0]) ??
-                      DateTime.now().year;
-
-                  await _semesterService.createSemester(
-                    code: code,
-                    name: name,
-                    year: year,
-                    startDate: startDate,
-                    endDate: endDate,
-                    isActive: setAsActive,
-                  );
-
-                  if (mounted) {
-                    Navigator.pop(context); // Close loading
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Semester created successfully!'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    _loadSemesters();
-                  }
-                } catch (e) {
-                  if (mounted) {
-                    Navigator.pop(context); // Close loading
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Error creating semester: $e'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                }
+                Navigator.pop(context);
+                // TODO: Implement create semester API call
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Create semester feature coming soon!'),
+                  ),
+                );
               },
               child: const Text('Create'),
             ),
@@ -214,40 +162,6 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _setActiveSemester(Semester semester) async {
-    try {
-      // Show loading
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
-
-      await _semesterService.setActiveSemester(semester.id);
-
-      if (mounted) {
-        Navigator.pop(context); // Close loading
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${semester.displayName} is now active'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        _loadSemesters();
-      }
-    } catch (e) {
-      if (mounted) {
-        Navigator.pop(context); // Close loading
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error activating semester: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
   }
 
   void _deleteSemester(Semester semester) {
@@ -264,41 +178,14 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () async {
-              try {
-                Navigator.pop(context);
-
-                // Show loading
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) =>
-                      const Center(child: CircularProgressIndicator()),
-                );
-
-                await _semesterService.deleteSemester(semester.id);
-
-                if (mounted) {
-                  Navigator.pop(context); // Close loading
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Semester deleted successfully'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  _loadSemesters();
-                }
-              } catch (e) {
-                if (mounted) {
-                  Navigator.pop(context); // Close loading
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error deleting semester: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
+            onPressed: () {
+              Navigator.pop(context);
+              // TODO: Implement delete semester API call
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Delete semester feature coming soon!'),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Delete'),
@@ -350,13 +237,10 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
                             leading: CircleAvatar(
                               backgroundColor: semester.isActive
                                   ? Colors.green
-                                  : Colors.blue.shade200,
+                                  : Colors.blue,
                               child: Text(
-                                '${semester.code.split('-').first.substring(0, 1)}${semester.code.split('-').length > 1 ? semester.code.split('-').last.substring(2, 4) : ''}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                semester.code.substring(0, 2).toUpperCase(),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                             title: Text(
@@ -371,16 +255,6 @@ class _ManageSemestersScreenState extends State<ManageSemestersScreen> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (!semester.isActive)
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.check_circle_outline,
-                                      color: Colors.green,
-                                    ),
-                                    tooltip: 'Set as Active',
-                                    onPressed: () =>
-                                        _setActiveSemester(semester),
-                                  ),
                                 if (semester.isActive)
                                   Container(
                                     padding: const EdgeInsets.symmetric(

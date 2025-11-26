@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/notification.dart';
 import '../services/notification_service.dart';
-import '../services/course_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -13,7 +12,6 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final _notificationService = NotificationService();
-  final _courseService = CourseService();
   List<NotificationModel> _notifications = [];
   bool _isLoading = true;
   String _filter = 'all'; // all, unread, read
@@ -161,45 +159,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               approve ? 'Join request approved!' : 'Join request declined',
             ),
             backgroundColor: approve ? Colors.green : null,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
-        );
-      }
-    }
-  }
-
-  Future<void> _handleTeacherInvitation(
-    NotificationModel notification,
-    bool accept,
-  ) async {
-    try {
-      final courseId = notification.data?['courseId'];
-      if (courseId == null) {
-        throw Exception('Course ID not found in notification');
-      }
-
-      await _courseService.respondToTeacherInvite(
-        courseId: courseId,
-        notificationId: notification.id,
-        accept: accept,
-      );
-
-      await _loadNotifications();
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              accept
-                  ? 'Course assignment accepted! You are now the instructor.'
-                  : 'Course assignment declined',
-            ),
-            backgroundColor: accept ? Colors.green : null,
           ),
         );
       }
@@ -426,45 +385,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         OutlinedButton.icon(
                           onPressed: () =>
                               _handleCourseInvitation(notification, false),
-                          icon: const Icon(Icons.close, size: 16),
-                          label: const Text('Decline'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.red,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                // Teacher invitation action buttons (for instructors)
-                if (notification.type == 'teacher_invite' &&
-                    !notification.isRead)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Row(
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () =>
-                              _handleTeacherInvitation(notification, true),
-                          icon: const Icon(Icons.check, size: 16),
-                          label: const Text('Accept'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        OutlinedButton.icon(
-                          onPressed: () =>
-                              _handleTeacherInvitation(notification, false),
                           icon: const Icon(Icons.close, size: 16),
                           label: const Text('Decline'),
                           style: OutlinedButton.styleFrom(

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../services/notification_service.dart';
 import '../models/user.dart';
-import '../screens/student_dashboard.dart';
-import '../screens/profile_screen.dart';
-import '../screens/notifications_screen.dart';
-import '../screens/settings_screen.dart';
+import 'student_dashboard.dart';
+import 'profile_screen.dart';
+import 'notifications_screen.dart';
+import 'settings_screen.dart';
 
 class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({super.key});

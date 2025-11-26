@@ -8,6 +8,12 @@ class ApiConfig {
   static const String _localBase = 'http://localhost:5000/api';
   static const String _androidEmulatorBase = 'http://10.0.2.2:5000/api';
 
+  // Production (deployed) URL
+  static const String _prodBase = 'https://elearning-it.onrender.com/api';
+
+  // Optional compile-time override. Set with --dart-define=API_BASE=https://.../api
+  static const String _envBase = String.fromEnvironment('API_BASE', defaultValue: '');
+
   // API endpoints (based on your actual backend routes)
   static const String auth = '/auth';
   static const String users = '/users';
@@ -28,8 +34,12 @@ class ApiConfig {
 
   // Helper method to get the correct base URL for different environments
   static String getBaseUrl() {
+    // If compile-time override provided, use it.
+    if (_envBase.isNotEmpty) return _envBase;
+
+    // For web, default to the production URL (deployed site).
     if (kIsWeb) {
-      return _localBase;
+      return _prodBase;
     }
 
     try {

@@ -3,8 +3,6 @@ import 'dart:math';
 import '../services/course_service.dart';
 import '../services/semester_service.dart';
 import '../services/auth_service.dart';
-import '../services/admin_service.dart';
-import '../services/student_service.dart';
 import '../models/course.dart';
 import '../models/semester.dart';
 import '../models/user.dart';
@@ -20,12 +18,9 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
   final _courseService = CourseService();
   final _semesterService = SemesterService();
   final _authService = AuthService();
-  final _adminService = AdminService();
-  final _studentService = StudentService();
 
   List<Course> _courses = [];
   List<Semester> _semesters = [];
-  List<User> _instructors = [];
   User? _currentUser;
   bool _isLoading = true;
 
@@ -56,20 +51,9 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
       final semesters = await _semesterService.getSemesters();
       final user = await _authService.getCurrentUser();
 
-      // Fetch instructors if user is admin
-      List<User> instructors = [];
-      if (user?.role == 'admin') {
-        try {
-          instructors = await _adminService.getAllInstructors();
-        } catch (e) {
-          print('Error loading instructors: $e');
-        }
-      }
-
       setState(() {
         _courses = courses;
         _semesters = semesters;
-        _instructors = instructors;
         _currentUser = user;
         _isLoading = false;
       });
@@ -199,15 +183,8 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
     Semester? selectedSemester;
-    User? selectedInstructor;
     int selectedSessions = 15;
     String selectedColor = _getRandomColor();
-
-    // If admin, allow instructor selection; otherwise, use current user
-    final bool isAdmin = _currentUser?.role == 'admin';
-    if (!isAdmin) {
-      selectedInstructor = _currentUser;
-    }
 
     showDialog(
       context: context,
@@ -250,48 +227,20 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Instructor Selection (dropdown for admin, read-only for others)
-                  if (isAdmin)
-                    DropdownButtonFormField<User>(
-                      value: selectedInstructor,
-                      decoration: const InputDecoration(
-                        labelText: 'Assign Instructor (Optional)',
-                        border: OutlineInputBorder(),
-                        helperText:
-                            'Leave blank to assign later via invitation',
-                      ),
-                      items: [
-                        const DropdownMenuItem<User>(
-                          value: null,
-                          child: Text('-- Assign Later --'),
-                        ),
-                        ..._instructors.map((instructor) {
-                          return DropdownMenuItem<User>(
-                            value: instructor,
-                            child: Text(instructor.fullName),
-                          );
-                        }).toList(),
-                      ],
-                      onChanged: (value) {
-                        setDialogState(() {
-                          selectedInstructor = value;
-                        });
-                      },
-                    )
-                  else
-                    TextField(
-                      enabled: false,
-                      decoration: InputDecoration(
-                        labelText: 'Instructor',
-                        hintText: _currentUser?.fullName ?? 'Unknown',
-                        border: const OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
-                      ),
-                      controller: TextEditingController(
-                        text: _currentUser?.fullName ?? 'Unknown',
-                      ),
+                  // Instructor (read-only, shows current user)
+                  TextField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: 'Instructor',
+                      hintText: _currentUser?.fullName ?? 'Unknown',
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
                     ),
+                    controller: TextEditingController(
+                      text: _currentUser?.fullName ?? 'Unknown',
+                    ),
+                  ),
                   const SizedBox(height: 16),
 
                   // Semester Dropdown
@@ -744,278 +693,6 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
     );
   }
 
-  void _showAssignTeacherDialog(Course course) {
-    User? selectedInstructor;
-
-    showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          title: Text('Assign Teacher to ${course.name}'),
-          content: SizedBox(
-            width: 400,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Current instructor: ${course.instructorName ?? "None"}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Select a new instructor to send them an invitation to teach this course:',
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<User>(
-                  value: selectedInstructor,
-                  decoration: const InputDecoration(
-                    labelText: 'Select Instructor*',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: _instructors.map((instructor) {
-                    return DropdownMenuItem<User>(
-                      value: instructor,
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 16,
-                            backgroundImage: instructor.profilePicture != null
-                                ? NetworkImage(instructor.profilePicture!)
-                                : null,
-                            child: instructor.profilePicture == null
-                                ? Text(instructor.fullName[0])
-                                : null,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(instructor.fullName),
-                                Text(
-                                  instructor.email,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setDialogState(() {
-                      selectedInstructor = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (selectedInstructor == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please select an instructor'),
-                    ),
-                  );
-                  return;
-                }
-
-                Navigator.pop(context);
-
-                // Show loading
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) =>
-                      const Center(child: CircularProgressIndicator()),
-                );
-
-                try {
-                  await _courseService.assignTeacher(
-                    courseId: course.id,
-                    instructorId: selectedInstructor!.id,
-                  );
-
-                  if (!mounted) return;
-                  Navigator.pop(context); // Close loading
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Invitation sent to ${selectedInstructor!.fullName}',
-                      ),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-
-                  await _loadData();
-                } catch (e) {
-                  if (!mounted) return;
-                  Navigator.pop(context); // Close loading
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error assigning teacher: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
-              child: const Text('Send Invitation'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showAssignStudentsDialog(Course course) async {
-    try {
-      // Load students
-      final students = await _studentService.getStudents();
-      final selectedStudentIds = <String>{};
-
-      if (!mounted) return;
-
-      await showDialog(
-        context: context,
-        builder: (context) => StatefulBuilder(
-          builder: (context, setDialogState) => AlertDialog(
-            title: Text('Assign Students to ${course.name}'),
-            content: SizedBox(
-              width: 500,
-              height: 600,
-              child: Column(
-                children: [
-                  const Text(
-                    'Select students to send course invitations:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: students.isEmpty
-                        ? const Center(child: Text('No students available'))
-                        : ListView.builder(
-                            itemCount: students.length,
-                            itemBuilder: (context, index) {
-                              final student = students[index];
-                              final isSelected = selectedStudentIds.contains(
-                                student.id,
-                              );
-
-                              return CheckboxListTile(
-                                value: isSelected,
-                                onChanged: (checked) {
-                                  setDialogState(() {
-                                    if (checked == true) {
-                                      selectedStudentIds.add(student.id);
-                                    } else {
-                                      selectedStudentIds.remove(student.id);
-                                    }
-                                  });
-                                },
-                                title: Text(student.fullName),
-                                subtitle: Text(student.email),
-                                secondary: CircleAvatar(
-                                  backgroundImage:
-                                      student.profilePicture != null
-                                      ? NetworkImage(student.profilePicture!)
-                                      : null,
-                                  child: student.profilePicture == null
-                                      ? Text(student.fullName[0])
-                                      : null,
-                                ),
-                              );
-                            },
-                          ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${selectedStudentIds.length} student(s) selected',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: selectedStudentIds.isEmpty
-                    ? null
-                    : () async {
-                        Navigator.pop(context);
-
-                        // Show loading
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) =>
-                              const Center(child: CircularProgressIndicator()),
-                        );
-
-                        try {
-                          await _courseService.assignStudents(
-                            courseId: course.id,
-                            studentIds: selectedStudentIds.toList(),
-                          );
-
-                          if (!mounted) return;
-                          Navigator.pop(context); // Close loading
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Sent ${selectedStudentIds.length} invitation(s)',
-                              ),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                        } catch (e) {
-                          if (!mounted) return;
-                          Navigator.pop(context); // Close loading
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error assigning students: $e'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      },
-                child: const Text('Send Invitations'),
-              ),
-            ],
-          ),
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error loading students: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1063,7 +740,7 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12),
-                  child: ExpansionTile(
+                  child: ListTile(
                     leading: Container(
                       width: 50,
                       height: 50,
@@ -1090,9 +767,8 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
                         Text('Semester: ${course.semesterName ?? "N/A"}'),
                         Text('Sessions: ${course.sessions ?? 15}'),
                         Text(
-                          'Instructor: ${course.instructorName ?? "Not Assigned"}',
+                          'Instructor: ${course.instructorName ?? "Unknown"}',
                         ),
-                        Text('Students: ${course.studentCount}'),
                         if (!isEditable)
                           Container(
                             margin: const EdgeInsets.only(top: 4),
@@ -1111,83 +787,36 @@ class _ManageCoursesScreenState extends State<ManageCoursesScreen> {
                           ),
                       ],
                     ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Course Actions',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                // Edit Button
-                                ElevatedButton.icon(
-                                  onPressed: isEditable
-                                      ? () => _showEditCourseDialog(course)
-                                      : null,
-                                  icon: const Icon(Icons.edit, size: 18),
-                                  label: const Text('Edit'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                ),
-
-                                // Assign Teacher Button (Admin only)
-                                if (_currentUser?.role == 'admin')
-                                  ElevatedButton.icon(
-                                    onPressed: () =>
-                                        _showAssignTeacherDialog(course),
-                                    icon: const Icon(
-                                      Icons.person_add,
-                                      size: 18,
-                                    ),
-                                    label: const Text('Assign Teacher'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                      foregroundColor: Colors.white,
-                                    ),
-                                  ),
-
-                                // Assign Students Button
-                                ElevatedButton.icon(
-                                  onPressed: () =>
-                                      _showAssignStudentsDialog(course),
-                                  icon: const Icon(Icons.group_add, size: 18),
-                                  label: const Text('Assign Students'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.purple,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                ),
-
-                                // Delete Button
-                                ElevatedButton.icon(
-                                  onPressed: isEditable
-                                      ? () => _showDeleteCourseDialog(course)
-                                      : null,
-                                  icon: const Icon(Icons.delete, size: 18),
-                                  label: const Text('Delete'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                    isThreeLine: true,
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.edit,
+                            color: isEditable ? Colors.blue : Colors.grey,
+                          ),
+                          onPressed: isEditable
+                              ? () => _showEditCourseDialog(course)
+                              : null,
+                          tooltip: isEditable
+                              ? 'Edit'
+                              : 'Cannot edit (inactive semester)',
                         ),
-                      ),
-                    ],
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: isEditable ? Colors.red : Colors.grey,
+                          ),
+                          onPressed: isEditable
+                              ? () => _showDeleteCourseDialog(course)
+                              : null,
+                          tooltip: isEditable
+                              ? 'Delete'
+                              : 'Cannot delete (inactive semester)',
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

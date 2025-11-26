@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/student_dashboard.dart';
+import 'student_dashboard.dart';
 
 class StudentDrawer extends StatelessWidget {
   const StudentDrawer({Key? key}) : super(key: key);
