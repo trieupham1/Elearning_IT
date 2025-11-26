@@ -14,6 +14,7 @@ import 'screens/instructor/create_quiz_screen.dart';
 import 'screens/instructor/create_question_screen.dart';
 import 'screens/forgot_password_screen.dart';
 import 'screens/reset_password_screen.dart';
+import 'screens/messages_list_screen.dart';
 import 'models/quiz.dart';
 import 'providers/theme_provider.dart';
 
@@ -63,6 +64,7 @@ class _ELearningAppState extends State<ELearningApp> {
             '/manage-semesters': (context) => const ManageSemestersScreen(),
             '/manage-courses': (context) => const ManageCoursesScreen(),
             '/manage-students': (context) => const ManageStudentsScreen(),
+            '/messages': (context) => const MessagesListScreen(),
           },
           onGenerateRoute: (settings) {
             // Handle dynamic routes

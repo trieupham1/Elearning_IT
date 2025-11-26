@@ -1,5 +1,6 @@
 import 'dart:convert';
 import '../models/message.dart';
+import '../models/user.dart';
 import 'api_service.dart';
 
 class MessageService {
@@ -71,6 +72,17 @@ class MessageService {
     } catch (e) {
       print('Error marking message as read: $e');
       return false;
+    }
+  }
+
+  Future<List<User>> searchUsers(String query) async {
+    try {
+      final response = await _apiService.get('/users/search?q=$query');
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => User.fromJson(json)).toList();
+    } catch (e) {
+      print('Error searching users: $e');
+      return [];
     }
   }
 }
