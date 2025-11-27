@@ -717,214 +717,59 @@ class _InstructorDashboardState extends State<InstructorDashboard> {
   }
 
   void _showCreateCourseDialog(BuildContext context) {
-    final codeController = TextEditingController();
-    final nameController = TextEditingController();
+    final titleController = TextEditingController();
     final descriptionController = TextEditingController();
-    final sessionsController = TextEditingController(text: '15');
-
-    Semester? dialogSelectedSemester = _selectedSemester;
-    String selectedColor = '#2196F3';
-    final colors = [
-      '#2196F3', // Blue
-      '#4CAF50', // Green
-      '#FF9800', // Orange
-      '#9C27B0', // Purple
-      '#F44336', // Red
-      '#00BCD4', // Cyan
-    ];
 
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: const Text('Create New Course'),
-          content: SizedBox(
-            width: 400,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: codeController,
-                    decoration: InputDecoration(
-                      labelText: 'Course Code (e.g., CS101)',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+      builder: (context) => AlertDialog(
+        title: const Text('Create New Course'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Course Title',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Course Name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: descriptionController,
-                    decoration: InputDecoration(
-                      labelText: 'Description',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 16),
-                  if (_semesters.isNotEmpty)
-                    DropdownButtonFormField<Semester>(
-                      value: dialogSelectedSemester,
-                      decoration: InputDecoration(
-                        labelText: 'Semester',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      items: _semesters.map((Semester semester) {
-                        return DropdownMenuItem<Semester>(
-                          value: semester,
-                          child: Text(
-                            semester.displayName +
-                                (semester.isActive ? ' (Current)' : ''),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (Semester? newValue) {
-                        setState(() {
-                          dialogSelectedSemester = newValue;
-                        });
-                      },
-                    ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: sessionsController,
-                    decoration: InputDecoration(
-                      labelText: 'Number of Sessions',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Course Color',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 12,
-                        children: colors.map((color) {
-                          final isSelected = selectedColor == color;
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = color;
-                              });
-                            },
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Color(
-                                  int.parse('FF${color.substring(1)}', radix: 16),
-                                ),
-                                shape: BoxShape.circle,
-                                border: isSelected
-                                    ? Border.all(color: Colors.black, width: 3)
-                                    : null,
-                              ),
-                              child: isSelected
-                                  ? const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 20,
-                                    )
-                                  : null,
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                maxLines: 3,
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final code = codeController.text.trim();
-                final name = nameController.text.trim();
-                final description = descriptionController.text.trim();
-                final sessionsText = sessionsController.text.trim();
-
-                if (code.isEmpty || name.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please fill in course code and name'),
-                    ),
-                  );
-                  return;
-                }
-
-                if (dialogSelectedSemester == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please select a semester'),
-                    ),
-                  );
-                  return;
-                }
-
-                final sessions = int.tryParse(sessionsText) ?? 15;
-
-                Navigator.pop(context);
-
-                try {
-                  await _courseService.createCourse(
-                    code: code,
-                    name: name,
-                    description: description,
-                    semesterId: dialogSelectedSemester!.id,
-                    sessions: sessions,
-                    color: selectedColor,
-                  );
-
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Course created successfully!'),
-                      ),
-                    );
-                  }
-
-                  await _loadData();
-                } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Failed to create course: $e'),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: const Text('Create'),
-            ),
-          ],
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Implement create course
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Create course feature coming soon!'),
+                ),
+              );
+            },
+            child: const Text('Create'),
+          ),
+        ],
       ),
     );
   }
