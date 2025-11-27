@@ -1,0 +1,4 @@
+Username,Email,FirstName,LastName,StudentId,Password,Department,PhoneNumber,Year
+john_doe,john.doe@fit.edu.vn,John,Doe,STU001,student123,Information Technology,0123456789,1
+jane_smith,jane.smith@fit.edu.vn,Jane,Smith,STU002,student123,Information Technology,0987654321,2
+bob_wilson,bob.wilson@fit.edu.vn,Bob,Wilson,STU003,student123,Information Technology,0111222333,1

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'screens/student_home_screen.dart';
 import 'screens/instructor_home_screen.dart';
-import 'screens/api_test_screen.dart';
 import 'screens/manage_semesters_screen.dart';
 import 'screens/manage_courses_screen.dart';
 import 'screens/manage_students_screen.dart';
@@ -59,7 +58,6 @@ class _ELearningAppState extends State<ELearningApp> {
             '/student-home': (context) => const StudentHomeScreen(),
             '/instructor-home': (context) => const InstructorHomeScreen(),
             '/profile': (context) => const ProfileScreen(),
-            '/api-test': (context) => const ApiTestScreen(),
             '/forgot-password': (context) => const ForgotPasswordScreen(),
             '/manage-semesters': (context) => const ManageSemestersScreen(),
             '/manage-courses': (context) => const ManageCoursesScreen(),
