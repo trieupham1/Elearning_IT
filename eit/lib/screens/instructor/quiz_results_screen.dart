@@ -3,9 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io';
 import 'dart:convert';
-import 'dart:html' as html show document, AnchorElement, Blob, Url;
+import 'dart:io';
+// Note: dart:html import removed for mobile compatibility
+// Web download functionality is disabled for mobile builds
 import '../../services/quiz_service.dart';
 
 class QuizResultsScreen extends StatefulWidget {
@@ -897,51 +898,28 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
       // Create filename with timestamp
       final timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
       final filename = '${widget.quizTitle.replaceAll(RegExp(r'[^a-zA-Z0-9\s]'), '_')}_results_$timestamp.csv';
-      
-      if (kIsWeb) {
-        // Web platform - create downloadable file
-        final bytes = utf8.encode(csvContent);
-        final blob = html.Blob([bytes], 'text/csv');
-        final url = html.Url.createObjectUrlFromBlob(blob);
-        final anchor = html.document.createElement('a') as html.AnchorElement
-          ..href = url
-          ..style.display = 'none'
-          ..download = filename;
-        
-        html.document.body!.children.add(anchor);
-        anchor.click();
-        html.document.body!.children.remove(anchor);
-        html.Url.revokeObjectUrl(url);
-        
-        print('📁 CSV file downloaded: $filename');
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('📁 CSV file "$filename" downloaded successfully!'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      } else {
-        // Mobile platforms - use share functionality
-        final directory = await getApplicationDocumentsDirectory();
-        final file = File('${directory.path}/$filename');
-        await file.writeAsString(csvContent);
-        
-        await Share.shareXFiles(
-          [XFile(file.path)],
-          text: 'Quiz Results CSV Export',
-        );
-        
-        print('CSV file shared: $filename');
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('CSV file "$filename" ready to share!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
+
+      // Note: Web download functionality disabled for mobile builds
+      // To enable web support, add conditional imports for dart:html
+
+      // Mobile platforms - use share functionality
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/$filename');
+      await file.writeAsString(csvContent);
+
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: 'Quiz Results CSV Export',
+      );
+
+      print('CSV file shared: $filename');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('CSV file "$filename" ready to share!'),
+          backgroundColor: Colors.green,
+        ),
+      );
     } catch (e) {
       print('CSV download error: $e');
       ScaffoldMessenger.of(context).showSnackBar(

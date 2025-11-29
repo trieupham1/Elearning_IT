@@ -673,42 +673,6 @@ class _InstructorDashboardState extends State<InstructorDashboard> {
                   ],
                 ),
               ),
-              PopupMenuButton<String>(
-                onSelected: (value) {
-                  switch (value) {
-                    case 'edit':
-                      _showEditCourseDialog(context, course);
-                      break;
-                    case 'students':
-                      _showStudentsList(context, course);
-                      break;
-                    case 'assignments':
-                      _showAssignments(context, course);
-                      break;
-                    case 'materials':
-                      _showMaterials(context, course);
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: 'edit',
-                    child: Text('Edit Course'),
-                  ),
-                  const PopupMenuItem(
-                    value: 'students',
-                    child: Text('View Students'),
-                  ),
-                  const PopupMenuItem(
-                    value: 'assignments',
-                    child: Text('Assignments'),
-                  ),
-                  const PopupMenuItem(
-                    value: 'materials',
-                    child: Text('Materials'),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

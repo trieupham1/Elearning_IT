@@ -1,0 +1,79 @@
+# Backend - Node.js
+eit/backend/node_modules/
+eit/backend/.env
+eit/backend/.env.local
+eit/backend/.env.*.local
+eit/backend/package-lock.json
+eit/backend/npm-debug.log*
+eit/backend/yarn-debug.log*
+eit/backend/yarn-error.log*
+
+# Backend - Test data (should not be committed to avoid exposing test credentials)
+eit/backend/test.*.json
+eit/backend/test-*.js
+
+# Backend - Uploads and exports
+eit/backend/uploads/
+eit/backend/exports/*.xlsx
+eit/backend/exports/*.csv
+eit/backend/exports/*.pdf
+
+# Backend - Logs
+eit/backend/logs/
+*.log
+
+# Claude Code configuration
+.claude/
+
+# IDE - IntelliJ IDEA / WebStorm / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# IDE - VSCode (uncomment if you don't want to share VSCode settings)
+# .vscode/
+
+# OS - macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# OS - Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# OS - Linux
+*~
+.directory
+
+# Flutter/Dart - Already covered in eit/.gitignore but adding for clarity
+eit/.dart_tool/
+eit/.flutter-plugins
+eit/.flutter-plugins-dependencies
+eit/.packages
+eit/build/
+eit/pubspec.lock
+
+# Flutter - Generated files
+eit/linux/flutter/generated_plugin_registrant.cc
+eit/linux/flutter/generated_plugin_registrant.h
+eit/linux/flutter/generated_plugins.cmake
+eit/macos/Flutter/GeneratedPluginRegistrant.swift
+eit/windows/flutter/generated_plugin_registrant.cc
+eit/windows/flutter/generated_plugin_registrant.h
+eit/windows/flutter/generated_plugins.cmake
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~.nib
+
+# Database files (if any local database dumps)
+*.sql
+*.db
+*.sqlite
+*.sqlite3
