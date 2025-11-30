@@ -202,22 +202,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/api-test');
-                      },
-                      child: const Text(
-                        'Test API Connection',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Test credentials: admin/admin123 or test/test123',
-                      style: TextStyle(fontSize: 11, color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
                   ],
                 ),
               ),
