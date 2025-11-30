@@ -497,6 +497,11 @@ router.get('/quiz/:quizId/all', authMiddleware, instructorOnly, async (req, res)
     const studentAttempts = new Map();
     
     attempts.forEach(attempt => {
+      // Skip attempts with null/missing studentId
+      if (!attempt.studentId || !attempt.studentId._id) {
+        console.warn('⚠️ Skipping attempt with missing studentId:', attempt._id);
+        return;
+      }
       const studentId = attempt.studentId._id.toString();
       if (!studentAttempts.has(studentId)) {
         studentAttempts.set(studentId, []);
@@ -523,13 +528,13 @@ router.get('/quiz/:quizId/all', authMiddleware, instructorOnly, async (req, res)
     const summary = {
       quiz: quiz.title,
       totalAttempts: attempts.length,
-      uniqueStudents: [...new Set(attempts.map(a => a.studentId._id.toString()))].length,
+      uniqueStudents: [...new Set(attempts.filter(a => a.studentId && a.studentId._id).map(a => a.studentId._id.toString()))].length,
       completedAttempts: attempts.filter(a => ['submitted', 'auto_submitted'].includes(a.status)).length,
       averageScore: attempts.length > 0 
         ? Math.round(attempts.reduce((sum, a) => sum + a.score, 0) / attempts.length)
         : 0,
       attempts: bestAttempts, // Show only best attempts (one per student)
-      allAttempts: attempts // Keep all attempts for detailed view
+      allAttempts: attempts.filter(a => a.studentId) // Keep all attempts with valid studentId for detailed view
     };
 
     res.json(summary);
