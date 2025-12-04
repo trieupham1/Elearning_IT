@@ -20,6 +20,17 @@ function transformAttachments(attachments) {
   }));
 }
 
+// Helper function to transform attachments from API format to DB format
+function transformAttachmentsToDb(attachments) {
+  if (!attachments || !Array.isArray(attachments)) return [];
+  return attachments.map(att => ({
+    fileName: att.name || att.fileName || '',
+    fileUrl: att.url || att.fileUrl || '',
+    fileSize: att.size || att.fileSize || 0,
+    mimeType: att.mimeType
+  }));
+}
+
 // Get announcements by course
 router.get('/', authMiddleware, async (req, res) => {
   try {
@@ -119,7 +130,7 @@ router.post('/', authMiddleware, instructorOnly, async (req, res) => {
       authorName: author.fullName || author.username,
       authorAvatar: author.avatar,
       groupIds: groupIds || [],
-      attachments: attachments || [],
+      attachments: transformAttachmentsToDb(attachments || []),
       comments: []
     });
     await announcement.save();
@@ -154,9 +165,15 @@ router.post('/', authMiddleware, instructorOnly, async (req, res) => {
 // Update announcement
 router.put('/:id', authMiddleware, instructorOnly, async (req, res) => {
   try {
+    // Transform attachments if they exist in the update body
+    const updateData = { ...req.body };
+    if (updateData.attachments) {
+      updateData.attachments = transformAttachmentsToDb(updateData.attachments);
+    }
+    
     const announcement = await Announcement.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true }
     );
     
@@ -164,7 +181,11 @@ router.put('/:id', authMiddleware, instructorOnly, async (req, res) => {
       return res.status(404).json({ message: 'Announcement not found' });
     }
     
-    res.json(announcement);
+    // Transform attachments back to API format for response
+    const announcementObj = announcement.toObject();
+    announcementObj.attachments = transformAttachments(announcementObj.attachments);
+    
+    res.json(announcementObj);
   } catch (error) {
     res.status(400).json({ message: 'Error updating announcement', error: error.message });
   }

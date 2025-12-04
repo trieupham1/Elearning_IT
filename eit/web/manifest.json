@@ -1,11 +1,11 @@
 {
-    "name": "eit",
-    "short_name": "eit",
-    "start_url": ".",
+    "name": "E-Learning IT",
+    "short_name": "E-Learning",
+    "start_url": "/Elearning_IT/",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "E-Learning IT System - Faculty of Information Technology",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
