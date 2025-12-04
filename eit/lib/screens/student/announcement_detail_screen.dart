@@ -79,7 +79,8 @@ class _AnnouncementDetailScreenState extends State<AnnouncementDetailScreen> {
       // Launch URL to download file
       final uri = Uri.parse(attachment.url);
       if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
+        // Use platformDefault mode which works better on web
+        await launchUrl(uri, mode: LaunchMode.platformDefault);
 
         // Track download
         await _announcementService.trackDownload(
@@ -89,10 +90,12 @@ class _AnnouncementDetailScreenState extends State<AnnouncementDetailScreen> {
 
         _showSuccess('Download started');
       } else {
-        _showError('Cannot open file');
+        _showError('Cannot open file: ${attachment.url}');
       }
     } catch (e) {
       _showError('Failed to download file: $e');
+      print('Download error: $e');
+      print('File URL: ${attachment.url}');
     }
   }
 
