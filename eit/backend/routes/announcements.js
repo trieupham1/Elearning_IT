@@ -9,6 +9,17 @@ const { notifyNewAnnouncement, notifyNewComment } = require('../utils/notificati
 
 const router = express.Router();
 
+// Helper function to transform attachments from DB format to API format
+function transformAttachments(attachments) {
+  if (!attachments || !Array.isArray(attachments)) return [];
+  return attachments.map(att => ({
+    name: att.fileName || att.name || '',
+    url: att.fileUrl || att.url || '',
+    size: att.fileSize || att.size || 0,
+    mimeType: att.mimeType
+  }));
+}
+
 // Get announcements by course
 router.get('/', authMiddleware, async (req, res) => {
   try {
@@ -36,7 +47,7 @@ router.get('/', authMiddleware, async (req, res) => {
       .populate('groupIds', 'name')
       .sort({ createdAt: -1 });
     
-    // Transform announcements to ensure authorName exists
+    // Transform announcements to ensure authorName exists and attachments are in correct format
     const transformedAnnouncements = announcements.map(announcement => {
       const announcementObj = announcement.toObject();
       
@@ -47,6 +58,9 @@ router.get('/', authMiddleware, async (req, res) => {
           announcementObj.authorAvatar = announcementObj.authorId.avatar;
         }
       }
+      
+      // Transform attachments to correct field names
+      announcementObj.attachments = transformAttachments(announcementObj.attachments);
       
       return announcementObj;
     });
@@ -68,7 +82,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Announcement not found' });
     }
     
-    // Transform to ensure authorName exists
+    // Transform to ensure authorName exists and attachments are in correct format
     const announcementObj = announcement.toObject();
     if (!announcementObj.authorName && announcementObj.authorId) {
       if (typeof announcementObj.authorId === 'object') {
@@ -76,6 +90,9 @@ router.get('/:id', authMiddleware, async (req, res) => {
         announcementObj.authorAvatar = announcementObj.authorId.avatar;
       }
     }
+    
+    // Transform attachments to correct field names
+    announcementObj.attachments = transformAttachments(announcementObj.attachments);
     
     res.json(announcementObj);
   } catch (error) {
