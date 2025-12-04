@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:html' as html;
+import 'dart:convert';
 import '../../models/assignment_tracking.dart';
 import '../../services/assignment_service.dart';
 
@@ -160,20 +163,36 @@ class _AssignmentTrackingScreenState extends State<AssignmentTrackingScreen> {
         widget.assignmentId,
       );
 
-      // Save to temporary file
-      final directory = await getTemporaryDirectory();
-      final file = File(
-        '${directory.path}/assignment_${_trackingData!.assignmentInfo.title.replaceAll(' ', '_')}_tracking.csv',
-      );
-      await file.writeAsString(csvData);
+      if (kIsWeb) {
+        // For web: trigger download directly
+        final fileName = 'assignment_${_trackingData!.assignmentInfo.title.replaceAll(' ', '_')}_tracking.csv';
+        final bytes = utf8.encode(csvData);
+        final blob = html.Blob([bytes]);
+        final url = html.Url.createObjectUrlFromBlob(blob);
+        final anchor = html.AnchorElement(href: url)
+          ..setAttribute('download', fileName)
+          ..click();
+        html.Url.revokeObjectUrl(url);
+      } else {
+        // For mobile/desktop: save to file and share
+        final directory = await getTemporaryDirectory();
+        final file = File(
+          '${directory.path}/assignment_${_trackingData!.assignmentInfo.title.replaceAll(' ', '_')}_tracking.csv',
+        );
+        await file.writeAsString(csvData);
 
-      // Share file
-      await Share.shareXFiles(
-        [XFile(file.path)],
-        subject: 'Assignment Tracking - ${_trackingData!.assignmentInfo.title}',
-      );
+        await Share.shareXFiles(
+          [XFile(file.path)],
+          subject: 'Assignment Tracking - ${_trackingData!.assignmentInfo.title}',
+        );
+      }
 
       setState(() => _isExporting = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('CSV exported successfully')),
+        );
+      }
     } catch (e) {
       setState(() => _isExporting = false);
       if (mounted) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../config/api_config.dart';
 import '../../models/announcement.dart';
 import '../../models/user.dart';
 import '../../services/announcement_service.dart';
@@ -76,8 +77,16 @@ class _AnnouncementDetailScreenState extends State<AnnouncementDetailScreen> {
     try {
       _showMessage('Downloading ${attachment.name}...');
 
+      // Build full URL if the attachment URL is relative
+      String fileUrl = attachment.url;
+      if (fileUrl.startsWith('/')) {
+        // Relative URL, prepend base URL without /api
+        final baseUrl = ApiConfig.getBaseUrl().replaceAll('/api', '');
+        fileUrl = '$baseUrl$fileUrl';
+      }
+
       // Launch URL to download file
-      final uri = Uri.parse(attachment.url);
+      final uri = Uri.parse(fileUrl);
       if (await canLaunchUrl(uri)) {
         // Use platformDefault mode which works better on web
         await launchUrl(uri, mode: LaunchMode.platformDefault);
@@ -90,7 +99,7 @@ class _AnnouncementDetailScreenState extends State<AnnouncementDetailScreen> {
 
         _showSuccess('Download started');
       } else {
-        _showError('Cannot open file: ${attachment.url}');
+        _showError('Cannot open file: $fileUrl');
       }
     } catch (e) {
       _showError('Failed to download file: $e');
