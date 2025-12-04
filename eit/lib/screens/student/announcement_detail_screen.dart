@@ -77,12 +77,11 @@ class _AnnouncementDetailScreenState extends State<AnnouncementDetailScreen> {
     try {
       _showMessage('Downloading ${attachment.name}...');
 
-      // Build full URL if the attachment URL is relative
+      // Build full URL if the attachment URL is relative (same logic as materials)
       String fileUrl = attachment.url;
-      if (fileUrl.startsWith('/')) {
-        // Relative URL, prepend base URL without /api
-        final baseUrl = ApiConfig.getBaseUrl().replaceAll('/api', '');
-        fileUrl = '$baseUrl$fileUrl';
+      if (!fileUrl.startsWith('http')) {
+        // If it's a relative URL, construct full URL with API base
+        fileUrl = '${ApiConfig.baseUrl}$fileUrl';
       }
 
       // Launch URL to download file
