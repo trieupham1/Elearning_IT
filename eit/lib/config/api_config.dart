@@ -37,16 +37,12 @@ class ApiConfig {
     // If compile-time override provided, use it.
     if (_envBase.isNotEmpty) return _envBase;
 
-    // Always use production URL for all platforms
-    return _prodBase;
-
-    // Uncomment the code below if you want to use local development URLs:
-    /*
-    // For web, default to the production URL (deployed site).
+    // Use production URL for web (GitHub Pages), local for desktop/mobile development
     if (kIsWeb) {
       return _prodBase;
     }
 
+    // For mobile/desktop development
     try {
       if (Platform.isAndroid) {
         return _androidEmulatorBase;
@@ -55,7 +51,6 @@ class ApiConfig {
     } catch (e) {
       return _localBase;
     }
-    */
   }
 
   // Add baseUrl getter for backward compatibility
