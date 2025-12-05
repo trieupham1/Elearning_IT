@@ -1,45 +1,26 @@
 // ====================
 // utils/emailService.js
 // ====================
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
 class EmailService {
   constructor() {
-    // Check if email is configured
+    // Check if email is configured (now using SendGrid API)
     this.isConfigured = !!(
-      process.env.EMAIL_SERVICE &&
-      process.env.EMAIL_USER &&
-      process.env.EMAIL_PASSWORD &&
+      process.env.SENDGRID_API_KEY &&
       process.env.EMAIL_FROM
     );
 
     if (!this.isConfigured) {
-      console.warn('⚠️ Email service not configured. Set EMAIL_SERVICE, EMAIL_USER, EMAIL_PASSWORD, and EMAIL_FROM in .env file');
+      console.warn('⚠️ Email service not configured. Set SENDGRID_API_KEY and EMAIL_FROM in .env file');
       console.warn('⚠️ Email notifications will be skipped until configuration is complete');
       return;
     }
 
     try {
-      // Use direct SMTP settings instead of 'service' for better cloud compatibility
-      this.transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // Use STARTTLS (port 587)
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD
-        },
-        tls: {
-          ciphers: 'SSLv3',
-          rejectUnauthorized: false // Allow self-signed certificates on cloud
-        },
-        connectionTimeout: 30000, // 30 seconds connection timeout
-        greetingTimeout: 30000, // 30 seconds greeting timeout
-        socketTimeout: 45000, // 45 seconds socket timeout
-        debug: true, // Enable debug logs
-        logger: true // Enable logger
-      });
-      console.log('✅ Email service initialized successfully with SMTP settings');
+      // Initialize SendGrid
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      console.log('✅ Email service initialized successfully with SendGrid');
     } catch (error) {
       console.error('❌ Failed to initialize email service:', error.message);
       this.isConfigured = false;
@@ -53,24 +34,21 @@ class EmailService {
     }
 
     try {
-      const mailOptions = {
-        from: process.env.EMAIL_FROM,
+      const msg = {
         to,
+        from: process.env.EMAIL_FROM,
         subject,
         html
       };
 
-      // Add timeout to prevent hanging (45 seconds max for cloud servers)
-      const emailPromise = this.transporter.sendMail(mailOptions);
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Email sending timeout after 45 seconds')), 45000)
-      );
-
-      await Promise.race([emailPromise, timeoutPromise]);
+      await sgMail.send(msg);
       console.log(`✅ Email sent to ${to}: ${subject}`);
       return true;
     } catch (error) {
       console.error(`❌ Email send error to ${to}:`, error.message);
+      if (error.response) {
+        console.error('SendGrid error details:', error.response.body);
+      }
       return false;
     }
   }
