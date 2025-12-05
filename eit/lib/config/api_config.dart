@@ -1,14 +1,7 @@
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import '../utils/token_manager.dart';
 
 class ApiConfig {
-  // Development server URL - change this to your actual backend URL
-  // Note: Android emulator cannot access host's localhost; use 10.0.2.2 instead.
-  static const String _localBase = 'http://localhost:5000/api';
-  static const String _androidEmulatorBase = 'http://10.0.2.2:5000/api';
-
-  // Production (deployed) URL
+  // Production (deployed) URL - used for all platforms
   static const String _prodBase = 'https://elearning-it.onrender.com/api';
 
   // Optional compile-time override. Set with --dart-define=API_BASE=https://.../api
@@ -37,20 +30,8 @@ class ApiConfig {
     // If compile-time override provided, use it.
     if (_envBase.isNotEmpty) return _envBase;
 
-    // Use production URL for web (GitHub Pages), local for desktop/mobile development
-    if (kIsWeb) {
-      return _prodBase;
-    }
-
-    // For mobile/desktop development
-    try {
-      if (Platform.isAndroid) {
-        return _androidEmulatorBase;
-      }
-      return _localBase;
-    } catch (e) {
-      return _localBase;
-    }
+    // Use production URL for all platforms
+    return _prodBase;
   }
 
   // Add baseUrl getter for backward compatibility
