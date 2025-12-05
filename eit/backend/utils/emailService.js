@@ -25,6 +25,16 @@ class EmailService {
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD
+        },
+        // Add these settings for better reliability on cloud servers
+        secure: true, // Use SSL/TLS
+        pool: true, // Use pooled connections
+        maxConnections: 5,
+        maxMessages: 100,
+        rateDelta: 1000, // Send 1 email per second
+        rateLimit: 1,
+        tls: {
+          rejectUnauthorized: true
         }
       });
       console.log('✅ Email service initialized successfully');
@@ -48,10 +58,10 @@ class EmailService {
         html
       };
 
-      // Add timeout to prevent hanging (20 seconds max)
+      // Add timeout to prevent hanging (45 seconds max for cloud servers)
       const emailPromise = this.transporter.sendMail(mailOptions);
       const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Email sending timeout after 20 seconds')), 20000)
+        setTimeout(() => reject(new Error('Email sending timeout after 45 seconds')), 45000)
       );
 
       await Promise.race([emailPromise, timeoutPromise]);
