@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import '../models/user.dart';
@@ -202,15 +203,26 @@ class AuthService extends ApiService {
   Future<void> forgotPassword(String email) async {
     try {
       print('🔐 Requesting password reset for: $email');
-      
-      final response = await post(
-        '${ApiConfig.auth}/forgot-password',
-        body: {'email': email},
-        withAuth: false,
-      );
 
-      parseResponse(response);
-      print('✅ Password reset email sent to: $email');
+      // Use longer timeout for email sending (60 seconds)
+      final headers = await ApiConfig.headers();
+      final url = '${ApiConfig.getBaseUrl()}${ApiConfig.auth}/forgot-password';
+
+      final response = await http
+          .post(
+            Uri.parse(url),
+            headers: headers,
+            body: json.encode({'email': email}),
+          )
+          .timeout(const Duration(seconds: 60));
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        parseResponse(response);
+        print('✅ Password reset email sent to: $email');
+      } else {
+        final data = parseResponse(response);
+        throw ApiException(data['message'] ?? 'Failed to send reset email', response.statusCode);
+      }
     } catch (e) {
       print('❌ Forgot password failed: $e');
       if (e is ApiException) {
