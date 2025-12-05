@@ -219,35 +219,32 @@ process.on('uncaughtException', (error) => {
 });
 
 // Graceful shutdown on SIGTERM
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async () => {
   console.log('👋 SIGTERM received, closing server gracefully');
   if (global.server) {
-    global.server.close(() => {
+    global.server.close(async () => {
       console.log('✅ HTTP server closed');
-      mongoose.connection.close(false, () => {
-        console.log('✅ MongoDB connection closed');
-        process.exit(0);
-      });
+      await mongoose.connection.close();
+      console.log('✅ MongoDB connection closed');
+      process.exit(0);
     });
   }
 });
 
 // Graceful shutdown on SIGINT (Ctrl+C)
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   console.log('\n👋 SIGINT received, closing server gracefully');
   if (global.server) {
-    global.server.close(() => {
+    global.server.close(async () => {
       console.log('✅ HTTP server closed');
-      mongoose.connection.close(false, () => {
-        console.log('✅ MongoDB connection closed');
-        process.exit(0);
-      });
-    });
-  } else {
-    mongoose.connection.close(false, () => {
+      await mongoose.connection.close();
       console.log('✅ MongoDB connection closed');
       process.exit(0);
     });
+  } else {
+    await mongoose.connection.close();
+    console.log('✅ MongoDB connection closed');
+    process.exit(0);
   }
 });
 
