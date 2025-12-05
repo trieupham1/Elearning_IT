@@ -20,24 +20,26 @@ class EmailService {
     }
 
     try {
+      // Use direct SMTP settings instead of 'service' for better cloud compatibility
       this.transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE || 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // Use STARTTLS (port 587)
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD
         },
-        // Add these settings for better reliability on cloud servers
-        secure: true, // Use SSL/TLS
-        pool: true, // Use pooled connections
-        maxConnections: 5,
-        maxMessages: 100,
-        rateDelta: 1000, // Send 1 email per second
-        rateLimit: 1,
         tls: {
-          rejectUnauthorized: true
-        }
+          ciphers: 'SSLv3',
+          rejectUnauthorized: false // Allow self-signed certificates on cloud
+        },
+        connectionTimeout: 30000, // 30 seconds connection timeout
+        greetingTimeout: 30000, // 30 seconds greeting timeout
+        socketTimeout: 45000, // 45 seconds socket timeout
+        debug: true, // Enable debug logs
+        logger: true // Enable logger
       });
-      console.log('✅ Email service initialized successfully');
+      console.log('✅ Email service initialized successfully with SMTP settings');
     } catch (error) {
       console.error('❌ Failed to initialize email service:', error.message);
       this.isConfigured = false;
